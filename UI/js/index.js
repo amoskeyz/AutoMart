@@ -10,6 +10,31 @@ let navbar = document.querySelector('.nav-bar');
 let navlink = document.querySelectorAll('.nav-link');
 let navLogo = document.querySelector('.project-name');
 let input = document.querySelector('#drop-down');
+const email = document.querySelector('.name');
+const label = document.querySelector('.label');
+
+
+email.addEventListener('focus', () => {
+    label.style.top = '-40px';
+    label.style.fontSize = '13px';
+  });
+  
+email.addEventListener('input', (event) => {
+    event.preventDefault();
+    const str = email.value;
+    if (str.length > 0) {
+      label.style.top = '-40px';
+      label.style.fontSize = '13px';
+    }
+  });
+  
+email.addEventListener('focusout', () => {
+    const str = email.value;
+    if (str.length < 1) {
+      label.style.top = '-20px';
+      label.style.fontSize = '16px';
+    }
+  });
 
 
 window.addEventListener('scroll', (event) => {
