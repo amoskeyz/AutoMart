@@ -140,7 +140,7 @@ article.forEach(article =>{
 
 
 close.addEventListener('click',(e)=>{
-	setTimeout( function(){dialog.close();}, 300)
+	setTimeout( function(){dialog.close();}, 300);
 	dialog.classList.remove('grow');
 })
 
