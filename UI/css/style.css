@@ -55,6 +55,11 @@ nav{
 .drop-menu label:hover{
 	cursor: pointer;
 }
+
+.bnt > a{
+	text-decoration: none;
+	color:white
+}
   
 .nav-bar{
     width: 100%;
