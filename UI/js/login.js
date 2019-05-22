@@ -62,7 +62,7 @@ display.addEventListener('click',(event) =>{
     if (input[2].className !== 'valid'){
         return;
     }
-    window.location.href= 'index.html';
+    window.location.href= 'main.html';
     
 });
 
@@ -85,4 +85,4 @@ window.addEventListener('load', ()=>{
         input.value = '';
     })
 })
-console.log(submitFlag, checker)
+// console.log(submitFlag, checker)
