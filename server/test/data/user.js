@@ -12,5 +12,9 @@ const user = [
     password: 'automart',
     phoneNumber: '09087897656',
   },
+  {
+    email: 'support@automart.com',
+    password: 'auto0mart',
+  },
 ];
 export default user;

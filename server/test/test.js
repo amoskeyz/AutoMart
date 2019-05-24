@@ -19,7 +19,7 @@ describe('AutoMart Test', () => {
     });
   });
 
-  describe('/Sign up a new user', () => {
+  describe('SIGN UP', () => {
     it('should sign up a new user', (done) => {
       chai.request(app)
         .post('/api/v1/auth/signup')
@@ -51,6 +51,36 @@ describe('AutoMart Test', () => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({ firstName: '' })
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+  });
+
+  describe('LOGIN', () => {
+    it('should sign in an existing user', (done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signin')
+        .send(user[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+    it('should return an error with incorrect input details', (done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signin')
+        .send(user[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+    it('should return error for invalid field', (done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signin')
+        .send({ email: '' })
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
           done();
