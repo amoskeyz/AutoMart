@@ -10,6 +10,12 @@ const schema = {
       .trim(),
     password: Joi.string().required().min(8),
   }),
+
+  signin: Joi.object().keys({
+    email: Joi.string().email().required()
+      .trim(),
+    password: Joi.string().required().min(8),
+  }),
 };
 
 export default schema;

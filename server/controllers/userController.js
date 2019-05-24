@@ -32,6 +32,29 @@ class userController {
       Token: token({ id: userObj.id }), id, firstName, lastName, email, password, phoneNumber,
     });
   }
+
+  static signinUser(req, res) {
+    const { email, password } = req.body;
+    let isUser = false;
+    let id;
+    let firstName;
+    let lastName;
+    let phoneNumber;
+    users.forEach((user) => {
+      if (user.email === email && user.password === password) {
+        isUser = true;
+        ({
+          id, firstName, lastName, phoneNumber,
+        } = user);
+      }
+    });
+    if (isUser) {
+      return utilities.successStatus(res, 200, 'data', {
+        Token: token({ id }), id, firstName, lastName, email, phoneNumber,
+      });
+    }
+    return utilities.errorstatus(res, 400, 'Wrong User details');
+  }
 }
 
 export default userController;
