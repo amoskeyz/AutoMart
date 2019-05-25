@@ -1,6 +1,7 @@
 import token from '../helper/token';
 import users from '../model/user';
 import utilities from '../helper/utilities';
+import secure from '../helper/encrypt';
 
 class userController {
   static welcome(req, res) {
@@ -13,6 +14,7 @@ class userController {
     const {
       firstName, lastName, email, password, phoneNumber,
     } = req.body;
+    const passwordHash = secure.passwordhash(password);
 
     let isExist = false;
     users.forEach((user) => {
@@ -25,11 +27,11 @@ class userController {
     }
     const id = users.length + 1;
     const userObj = {
-      id, firstName, lastName, email, password, phoneNumber,
+      id, firstName, lastName, email, passwordHash, phoneNumber,
     };
     users.push(userObj);
     return utilities.successStatus(res, 201, 'data', {
-      Token: token({ id: userObj.id }), id, firstName, lastName, email, password, phoneNumber,
+      Token: token({ id: userObj.id }), id, firstName, lastName, email, passwordHash, phoneNumber,
     });
   }
 
@@ -40,20 +42,22 @@ class userController {
     let firstName;
     let lastName;
     let phoneNumber;
+    let passwordcheck;
     users.forEach((user) => {
-      if (user.email === email && user.password === password) {
+      if (user.email === email) {
         isUser = true;
         ({
           id, firstName, lastName, phoneNumber,
         } = user);
+        passwordcheck = secure.compare(password, user.passwordHash);
       }
     });
-    if (isUser) {
+    if (isUser && passwordcheck) {
       return utilities.successStatus(res, 200, 'data', {
         Token: token({ id }), id, firstName, lastName, email, phoneNumber,
       });
     }
-    return utilities.errorstatus(res, 400, 'Wrong User details');
+    return utilities.errorstatus(res, 400, 'Incorrect Password or Email');
   }
 }
 
