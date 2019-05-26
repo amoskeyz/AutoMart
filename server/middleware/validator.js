@@ -29,8 +29,7 @@ class validate {
     req.body.firstName = firstName.trim();
     req.body.lastName = lastName.trim();
     req.body.password = password.trim();
-    req.body.email = email.trim();
-    req.body.email = email.toLowerCase();
+    req.body.email = email.toLowerCase().trim();
     return next();
   }
 
@@ -57,8 +56,36 @@ class validate {
       return util.errorstatus(res, 400, error);
     }
     req.body.password = password.trim();
-    req.body.email = email.trim();
-    req.body.email = email.toLowerCase();
+    req.body.email = email.toLowerCase().trim();
+    return next();
+  }
+
+  /**
+  * @static
+  * @description Validates a car input request
+  * @param {Object} req - Request object
+  * @param {Object} res - Response object
+  * @param {Object} next - Next function call
+  * @memberof Controllers
+  */
+  static validateCar(req, res, next) {
+    const {
+      manufacturer, model, bodyType, price, state,
+    } = req.body;
+
+    const validateObject = {
+      manufacturer, model, bodyType, price, state,
+    };
+
+    const error = util.validateJoi(validateObject, schema.car);
+    if (error) {
+      return util.errorstatus(res, 400, error);
+    }
+    req.body.manufacturer = manufacturer.trim();
+    req.body.model = model.trim();
+    req.body.bodyType = bodyType.trim();
+    req.body.price = price.trim();
+    req.body.state = state.trim();
     return next();
   }
 }

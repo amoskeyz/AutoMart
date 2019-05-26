@@ -55,7 +55,6 @@ class Utilities {
   static successStatus(res, status, key, object) {
     const response = { status };
     response[key] = object;
-
     return res.status(status).json(response);
   }
 }
