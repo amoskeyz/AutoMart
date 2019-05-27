@@ -3,6 +3,7 @@ import chaihttp from 'chai-http';
 import app from '../app';
 import user from './data/user';
 import car from './data/car';
+import order from './data/order';
 
 let userToken;
 
@@ -119,6 +120,41 @@ describe('AutoMart Test', () => {
         .post('/api/v1/cars/')
         .set('authtoken', userToken)
         .send(car[1])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+  });
+
+  describe('Purchase Order', () => {
+    it('should not make a purchase order with invalid input data', (done) => {
+      chai.request(app)
+        .post('/api/v1/order/1')
+        .set('authtoken', userToken)
+        .send(order[1])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should create ba purchase order', (done) => {
+      chai.request(app)
+        .post('/api/v1/order/1')
+        .set('authtoken', userToken)
+        .send(order[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(201);
+          done();
+        });
+    });
+
+    it('should not make a purchase order with invalid user', (done) => {
+      chai.request(app)
+        .post('/api/v1/order/6')
+        .set('authtoken', userToken)
+        .send(order[0])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
           done();
