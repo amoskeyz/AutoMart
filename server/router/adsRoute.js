@@ -6,5 +6,6 @@ import authenticator from '../middleware/authentication';
 const adsRouter = express();
 adsRouter.post('/cars/', authenticator.authenticateUser, validator.validateCar, adsController.postAds);
 adsRouter.post('/order/:id', authenticator.authenticateUser, validator.validateOrder, adsController.purchaseOrder);
+adsRouter.patch('/order/:orderId/price', authenticator.authenticateUser, validator.validateUpdateOrder, adsController.updatePurchase);
 
 export default adsRouter;
