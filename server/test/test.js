@@ -174,9 +174,20 @@ describe('AutoMart Test', () => {
         });
     });
 
-    it('should update the price of a purchase order', (done) => {
+    it('should not update the price of a purchase order is status is approved', (done) => {
       chai.request(app)
         .patch('/api/v1/order/2/price')
+        .set('authtoken', userToken)
+        .send(order[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should update the price of a purchase order', (done) => {
+      chai.request(app)
+        .patch('/api/v1/order/3/price')
         .set('authtoken', userToken)
         .send(order[2])
         .end((err, res) => {
@@ -185,9 +196,10 @@ describe('AutoMart Test', () => {
         });
     });
 
+
     it('should update the price of a purchase order', (done) => {
       chai.request(app)
-        .patch('/api/v1/order/2/price')
+        .patch('/api/v1/order/3/price')
         .set('authtoken', userToken)
         .send(order[2])
         .end((err, res) => {
@@ -209,7 +221,7 @@ describe('AutoMart Test', () => {
 
     it('should not update the order price with wrong input details', (done) => {
       chai.request(app)
-        .patch('/api/v1/order/2/price')
+        .patch('/api/v1/order/3/price')
         .set('authtoken', userToken)
         .send(order[3])
         .end((err, res) => {
@@ -220,7 +232,7 @@ describe('AutoMart Test', () => {
 
     it('should not update the order price with unauthorized user token', (done) => {
       chai.request(app)
-        .patch('/api/v1/order/2/price')
+        .patch('/api/v1/order/3/price')
         .set('authtoken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTU1ODg5NTE5MywiZXhwIjo4NjQwMDAwMDAwMDE1NTkwMDAwMDB9.o-vzr3gzF_49d1QIvslkcpsWO9qbqqK8ZeG5-LzeTHc')
         .send(order[2])
         .end((err, res) => {
@@ -230,6 +242,47 @@ describe('AutoMart Test', () => {
     });
   });
 
+  describe('Mark Car as Sold', () => {
+    it('should not mark car as sold if not owner of car', (done) => {
+      chai.request(app)
+        .patch('/api/v1/cars/1/status')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should not mark car that does not exist', (done) => {
+      chai.request(app)
+        .patch('/api/v1/cars/12/status')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should mark a car as sold', (done) => {
+      chai.request(app)
+        .patch('/api/v1/cars/3/status')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+
+    it('should not mark a car as sold with unauthorize token', (done) => {
+      chai.request(app)
+        .patch('/api/v1/cars/2/status')
+        .set('authtoken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTU1ODg5NTE5MywiZXhwIjo4NjQwMDAwMDAwMDE1NTkwMDAwMDB9.o-vzr3gzF_49d1QIvslkcpsWO9qbqqK8ZeG5-LzeTHc')
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+  });
 
   describe('Authentication', () => {
     it('should not post with invalid id', (done) => {
