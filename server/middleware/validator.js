@@ -99,6 +99,17 @@ class validate {
     req.body.price = priceOffered.trim();
     return next();
   }
+
+  static validateUpdateOrder(req, res, next) {
+    const { newPriceOffered } = req.body;
+    const validateObject = { newPriceOffered };
+    const error = util.validateJoi(validateObject, schema.updateOrder);
+    if (error) {
+      return util.errorstatus(res, 400, error);
+    }
+    req.body.newPriceOffered = newPriceOffered.trim();
+    return next();
+  }
 }
 
 export default validate;

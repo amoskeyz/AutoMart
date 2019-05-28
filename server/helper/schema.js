@@ -29,6 +29,10 @@ const schema = {
   order: Joi.object().keys({
     priceOffered: Joi.number().integer().required(),
   }),
+
+  updateOrder: Joi.object().keys({
+    newPriceOffered: Joi.number().integer().required(),
+  }),
 };
 
 export default schema;

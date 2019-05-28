@@ -48,16 +48,36 @@ class adsController {
     const id = order.length + 1;
     const createdOn = new Date();
     const status = 'Pending';
-    const buyer = email;
+    const buyerId = userId;
     if (email && isCar) {
       const { priceOffered } = req.body;
       const orderObj = {
-        id, buyer, carId, createdOn, status, price, priceOffered,
+        id, buyerId, carId, createdOn, status, price, priceOffered,
       };
       order.push(orderObj);
       return utilities.successStatus(res, 201, 'data', orderObj);
     }
     return utilities.errorstatus(res, 400, 'Car or User Not Found');
+  }
+
+  static updatePurchase(req, res) {
+    const userId = req.decoder;
+    const { newPriceOffered } = req.body;
+    const { orderId } = req.params;
+    const user = users.filter(use => use.id === Number(userId));
+    if (user[0]) {
+      const isOrder = order.filter(orde => orde.id === Number(orderId));
+      if (!isOrder[0]) return utilities.errorstatus(res, 400, 'Purchase Order Not found');
+      if (isOrder[0].buyerId !== userId) return utilities.errorstatus(res, 400, 'Unauthorized user');
+      const orderIndex = order.findIndex(ord => ord.id === Number(orderId));
+      if (order[orderIndex].priceOffered) {
+        order[orderIndex].oldPriceOffered = order[orderIndex].priceOffered;
+      } else order[orderIndex].oldPriceOffered = order[orderIndex].newPriceOffered;
+      order[orderIndex].newPriceOffered = newPriceOffered;
+      delete order[orderIndex].priceOffered;
+      return utilities.successStatus(res, 200, 'data', order[orderIndex]);
+    }
+    return utilities.errorstatus(res, 400, 'User Not Found');
   }
 }
 
