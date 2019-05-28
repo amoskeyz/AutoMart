@@ -8,6 +8,15 @@ const orders = [
     price: '70000000',
     priceOffered: '50000000',
   },
+  {
+    id: 2,
+    buyerId: '1',
+    carId: '1',
+    created_on: 'Sat May 25 2019 18:40:32 GMT+0100 (West Africa Standard Time)',
+    status: 'sold',
+    price: '70000000',
+    priceOffered: '50000000',
+  },
 ];
 
 export default orders;

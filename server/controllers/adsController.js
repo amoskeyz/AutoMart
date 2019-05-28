@@ -68,16 +68,33 @@ class adsController {
     if (user[0]) {
       const isOrder = order.filter(orde => orde.id === Number(orderId));
       if (!isOrder[0]) return utilities.errorstatus(res, 400, 'Purchase Order Not found');
-      if (isOrder[0].buyerId !== userId) return utilities.errorstatus(res, 400, 'Unauthorized user');
-      const orderIndex = order.findIndex(ord => ord.id === Number(orderId));
-      if (order[orderIndex].priceOffered) {
-        order[orderIndex].oldPriceOffered = order[orderIndex].priceOffered;
-      } else order[orderIndex].oldPriceOffered = order[orderIndex].newPriceOffered;
-      order[orderIndex].newPriceOffered = newPriceOffered;
-      delete order[orderIndex].priceOffered;
-      return utilities.successStatus(res, 200, 'data', order[orderIndex]);
+      if (isOrder[0].status === 'Pending') {
+        if (isOrder[0].buyerId !== userId) return utilities.errorstatus(res, 400, 'Unauthorized user');
+        const orderIndex = order.findIndex(ord => ord.id === Number(orderId));
+        if (order[orderIndex].priceOffered) {
+          order[orderIndex].oldPriceOffered = order[orderIndex].priceOffered;
+        } else order[orderIndex].oldPriceOffered = order[orderIndex].newPriceOffered;
+        order[orderIndex].newPriceOffered = newPriceOffered;
+        delete order[orderIndex].priceOffered;
+        return utilities.successStatus(res, 200, 'data', order[orderIndex]);
+      } return utilities.errorstatus(res, 400, 'Purchase Order Already Approved');
     }
     return utilities.errorstatus(res, 400, 'User Not Found');
+  }
+
+  static markSold(req, res) {
+    const userId = req.decoder;
+    const { carId } = req.params;
+    const user = users.filter(use => use.id === Number(userId));
+    if (user[0]) {
+      const carCheck = cars.filter(check => check.id === Number(carId));
+      if (!carCheck[0]) return utilities.errorstatus(res, 400, 'Car Does Not Exist');
+      if (user[0].email === carCheck[0].email) {
+        const carIndex = cars.findIndex(car => car.id === Number(carId));
+        cars[carIndex].status = 'sold';
+        return utilities.successStatus(res, 200, 'data', cars[carIndex]);
+      } return utilities.errorstatus(res, 400, 'Unauthorize User');
+    } return utilities.errorstatus(res, 400, 'Invalid User');
   }
 }
 
