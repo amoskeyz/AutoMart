@@ -121,6 +121,18 @@ class validate {
     req.body.price = price.trim();
     return next();
   }
+
+  static validateGetCar(req, res, next) {
+    // eslint-disable-next-line camelcase
+    const { status, min_price, max_price } = req.query;
+    const validateObject = { status, min_price, max_price };
+    const error = util.validateJoi(validateObject, schema.getCar);
+    if (error) {
+      return util.errorstatus(res, 400, error);
+    }
+    // req.body.price = price.trim();
+    return next();
+  }
 }
 
 export default validate;

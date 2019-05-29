@@ -126,11 +126,16 @@ class adsController {
   }
 
   static car(req, res) {
-    if (req.query.status) {
-      const { status } = req.query;
-      const unsoldCars = cars.filter(car => car.status === status);
-      return utilities.successStatus(res, 200, 'data', unsoldCars);
-    } return utilities.errorstatus(res, 400, 'Invalid Query String');
+    const { status } = req.query;
+    if (req.query.min_price && req.query.max_price) {
+      const minPrice = Math.round(Number(req.query.min_price));
+      const maxPrice = Math.round(Number(req.query.max_price));
+      const carPrice = cars.filter(car => car.price >= minPrice && car.price <= maxPrice);
+      if (!carPrice[0]) return utilities.errorstatus(res, 404, 'No Car Found Within This Price Range');
+      return utilities.successStatus(res, 200, 'data', carPrice);
+    }
+    const unsoldCars = cars.filter(car => car.status === status);
+    return utilities.successStatus(res, 200, 'data', unsoldCars);
   }
 }
 
