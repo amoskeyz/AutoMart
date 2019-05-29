@@ -8,5 +8,7 @@ adsRouter.post('/cars/', authenticator.authenticateUser, validator.validateCar, 
 adsRouter.post('/order/:id', authenticator.authenticateUser, validator.validateOrder, adsController.purchaseOrder);
 adsRouter.patch('/order/:orderId/price', authenticator.authenticateUser, validator.validateUpdateOrder, adsController.updatePurchase);
 adsRouter.patch('/cars/:carId/status', authenticator.authenticateUser, adsController.markSold);
+adsRouter.patch('/cars/:carId/price', authenticator.authenticateUser, validator.validateUpdateCar, adsController.updateCar);
+
 
 export default adsRouter;
