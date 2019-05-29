@@ -284,6 +284,64 @@ describe('AutoMart Test', () => {
     });
   });
 
+  describe('Update Car Price', () => {
+    it('should not update the car price on invalid input', (done) => {
+      chai.request(app)
+        .patch('/api/v1/cars/1/price')
+        .set('authtoken', userToken)
+        .send(car[3])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should not update a car price that does not exist', (done) => {
+      chai.request(app)
+        .patch('/api/v1/cars/12/price')
+        .set('authtoken', userToken)
+        .send(car[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should update a car price', (done) => {
+      chai.request(app)
+        .patch('/api/v1/cars/3/price')
+        .set('authtoken', userToken)
+        .send(car[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+
+    it('should not update a car price with invalid owner', (done) => {
+      chai.request(app)
+        .patch('/api/v1/cars/1/price')
+        .set('authtoken', userToken)
+        .send(car[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should not update a car price with unauthorize token', (done) => {
+      chai.request(app)
+        .patch('/api/v1/cars/3/price')
+        .set('authtoken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTU1ODg5NTE5MywiZXhwIjo4NjQwMDAwMDAwMDE1NTkwMDAwMDB9.o-vzr3gzF_49d1QIvslkcpsWO9qbqqK8ZeG5-LzeTHc')
+        .send(car[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+  });
+
+
   describe('Authentication', () => {
     it('should not post with invalid id', (done) => {
       chai.request(app)
