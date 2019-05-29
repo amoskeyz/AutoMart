@@ -112,6 +112,18 @@ class adsController {
       } return utilities.errorstatus(res, 400, 'Unauthorize User');
     } return utilities.errorstatus(res, 400, 'Invalid User');
   }
+
+  static specificCar(req, res) {
+    const userId = req.decoder;
+    const { carId } = req.params;
+    const user = users.filter(use => use.id === Number(userId));
+    if (user[0]) {
+      const carCheck = cars.filter(check => check.id === Number(carId));
+      if (!carCheck[0]) return utilities.errorstatus(res, 400, 'Car Does Not Exist');
+      const carIndex = cars.findIndex(car => car.id === Number(carId));
+      return utilities.successStatus(res, 200, 'data', cars[carIndex]);
+    } return utilities.errorstatus(res, 400, 'Invalid User');
+  }
 }
 
 export default adsController;
