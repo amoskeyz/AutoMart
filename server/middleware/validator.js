@@ -130,7 +130,16 @@ class validate {
     if (error) {
       return util.errorstatus(res, 400, error);
     }
-    // req.body.price = price.trim();
+    return next();
+  }
+
+  static validateCarId(req, res, next) {
+    const { carId } = req.params;
+    const validateObject = { carId };
+    const error = util.validateJoi(validateObject, schema.carId);
+    if (error) {
+      return util.errorstatus(res, 400, error);
+    }
     return next();
   }
 }

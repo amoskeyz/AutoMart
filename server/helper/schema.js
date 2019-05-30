@@ -43,6 +43,10 @@ const schema = {
     min_price: Joi.number(),
     max_price: Joi.number(),
   }),
+
+  carId: Joi.object().keys({
+    carId: Joi.number().required(),
+  }),
 };
 
 export default schema;
