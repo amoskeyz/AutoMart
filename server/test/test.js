@@ -96,7 +96,7 @@ describe('AutoMart Test', () => {
   describe('Post Car Ad', () => {
     it('should not post a car ad without user token', (done) => {
       chai.request(app)
-        .post('/api/v1/cars/')
+        .post('/api/v1/car/')
         .send(car[0])
         .end((err, res) => {
           expect(res.statusCode).to.equal(401);
@@ -106,7 +106,7 @@ describe('AutoMart Test', () => {
 
     it('should post a car ad for an existing user', (done) => {
       chai.request(app)
-        .post('/api/v1/cars/')
+        .post('/api/v1/car/')
         .set('authtoken', userToken)
         .send(car[0])
         .end((err, res) => {
@@ -117,7 +117,7 @@ describe('AutoMart Test', () => {
 
     it('should not post an ad with invalid car details', (done) => {
       chai.request(app)
-        .post('/api/v1/cars/')
+        .post('/api/v1/car/')
         .set('authtoken', userToken)
         .send(car[1])
         .end((err, res) => {
@@ -245,7 +245,7 @@ describe('AutoMart Test', () => {
   describe('Mark Car as Sold', () => {
     it('should not mark car as sold if not owner of car', (done) => {
       chai.request(app)
-        .patch('/api/v1/cars/1/status')
+        .patch('/api/v1/car/1/status')
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
@@ -255,7 +255,7 @@ describe('AutoMart Test', () => {
 
     it('should not mark car that does not exist', (done) => {
       chai.request(app)
-        .patch('/api/v1/cars/12/status')
+        .patch('/api/v1/car/12/status')
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
@@ -265,7 +265,7 @@ describe('AutoMart Test', () => {
 
     it('should mark a car as sold', (done) => {
       chai.request(app)
-        .patch('/api/v1/cars/3/status')
+        .patch('/api/v1/car/3/status')
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
@@ -275,7 +275,7 @@ describe('AutoMart Test', () => {
 
     it('should not mark a car as sold with unauthorize token', (done) => {
       chai.request(app)
-        .patch('/api/v1/cars/2/status')
+        .patch('/api/v1/car/2/status')
         .set('authtoken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTU1ODg5NTE5MywiZXhwIjo4NjQwMDAwMDAwMDE1NTkwMDAwMDB9.o-vzr3gzF_49d1QIvslkcpsWO9qbqqK8ZeG5-LzeTHc')
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
@@ -287,7 +287,7 @@ describe('AutoMart Test', () => {
   describe('Update Car Price', () => {
     it('should not update the car price on invalid input', (done) => {
       chai.request(app)
-        .patch('/api/v1/cars/1/price')
+        .patch('/api/v1/car/1/price')
         .set('authtoken', userToken)
         .send(car[3])
         .end((err, res) => {
@@ -298,7 +298,7 @@ describe('AutoMart Test', () => {
 
     it('should not update a car price that does not exist', (done) => {
       chai.request(app)
-        .patch('/api/v1/cars/12/price')
+        .patch('/api/v1/car/12/price')
         .set('authtoken', userToken)
         .send(car[2])
         .end((err, res) => {
@@ -309,7 +309,7 @@ describe('AutoMart Test', () => {
 
     it('should update a car price', (done) => {
       chai.request(app)
-        .patch('/api/v1/cars/3/price')
+        .patch('/api/v1/car/3/price')
         .set('authtoken', userToken)
         .send(car[2])
         .end((err, res) => {
@@ -320,7 +320,7 @@ describe('AutoMart Test', () => {
 
     it('should not update a car price with invalid owner', (done) => {
       chai.request(app)
-        .patch('/api/v1/cars/1/price')
+        .patch('/api/v1/car/1/price')
         .set('authtoken', userToken)
         .send(car[2])
         .end((err, res) => {
@@ -331,7 +331,7 @@ describe('AutoMart Test', () => {
 
     it('should not update a car price with unauthorize token', (done) => {
       chai.request(app)
-        .patch('/api/v1/cars/3/price')
+        .patch('/api/v1/car/3/price')
         .set('authtoken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTU1ODg5NTE5MywiZXhwIjo4NjQwMDAwMDAwMDE1NTkwMDAwMDB9.o-vzr3gzF_49d1QIvslkcpsWO9qbqqK8ZeG5-LzeTHc')
         .send(car[2])
         .end((err, res) => {
@@ -344,7 +344,7 @@ describe('AutoMart Test', () => {
   describe('View a Specific Car', () => {
     it('should not view a car that does not exist', (done) => {
       chai.request(app)
-        .get('/api/v1/cars/5/')
+        .get('/api/v1/car/5/')
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
@@ -354,7 +354,7 @@ describe('AutoMart Test', () => {
 
     it('should view a specific car', (done) => {
       chai.request(app)
-        .get('/api/v1/cars/3/')
+        .get('/api/v1/car/3/')
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
@@ -365,7 +365,7 @@ describe('AutoMart Test', () => {
 
     it('should not view a specific car with unauthorise token', (done) => {
       chai.request(app)
-        .get('/api/v1/cars/2/')
+        .get('/api/v1/car/2/')
         .set('authtoken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTU1ODg5NTE5MywiZXhwIjo4NjQwMDAwMDAwMDE1NTkwMDAwMDB9.o-vzr3gzF_49d1QIvslkcpsWO9qbqqK8ZeG5-LzeTHc')
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
@@ -374,10 +374,32 @@ describe('AutoMart Test', () => {
     });
   });
 
+  describe('View All Unsold Car', () => {
+    it('should not view a car that does not exist', (done) => {
+      chai.request(app)
+        .get('/api/v1/car')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should view all unsold car', (done) => {
+      chai.request(app)
+        .get('/api/v1/car?status=available')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+  });
+
   describe('Authentication', () => {
     it('should not post with invalid id', (done) => {
       chai.request(app)
-        .post('/api/v1/cars/')
+        .post('/api/v1/car/')
         .set('authtoken', 'jhosjfhaojfhoa')
         .end((err, res) => {
           expect(res.statusCode).to.equal(401);
@@ -387,7 +409,7 @@ describe('AutoMart Test', () => {
 
     it('should not post an ad with unauthorized id', (done) => {
       chai.request(app)
-        .post('/api/v1/cars/')
+        .post('/api/v1/car/')
         .set('authtoken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTU1ODg5NTE5MywiZXhwIjo4NjQwMDAwMDAwMDE1NTkwMDAwMDB9.o-vzr3gzF_49d1QIvslkcpsWO9qbqqK8ZeG5-LzeTHc')
         .send(car[0])
         .end((err, res) => {

@@ -17,7 +17,7 @@ class adsController {
         manufacturer, model, bodyType, price, state,
       } = req.body;
       const id = cars.length + 1;
-      const status = 'Available';
+      const status = 'available';
       const createdOn = new Date();
       const carObj = {
         id, email, createdOn, manufacturer, model, bodyType, price, state, status,
@@ -123,6 +123,14 @@ class adsController {
       const carIndex = cars.findIndex(car => car.id === Number(carId));
       return utilities.successStatus(res, 200, 'data', cars[carIndex]);
     } return utilities.errorstatus(res, 400, 'Invalid User');
+  }
+
+  static car(req, res) {
+    if (req.query.status) {
+      const { status } = req.query;
+      const unsoldCars = cars.filter(car => car.status === status);
+      return utilities.successStatus(res, 200, 'data', unsoldCars);
+    } return utilities.errorstatus(res, 400, 'Invalid Query String');
   }
 }
 

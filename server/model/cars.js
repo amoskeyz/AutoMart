@@ -8,7 +8,7 @@ const cars = [
     body_type: 'car',
     price: '70000000',
     state: 'New',
-    status: 'Available',
+    status: 'available',
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ const cars = [
     body_type: 'car',
     price: '1000000',
     state: 'New',
-    status: 'Available',
+    status: 'available',
   },
 ];
 
