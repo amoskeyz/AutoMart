@@ -127,16 +127,22 @@ class adsController {
 
   static car(req, res) {
     const { status } = req.query;
-    if (req.query.min_price && req.query.max_price) {
-      const minPrice = Math.round(Number(req.query.min_price));
-      const maxPrice = Math.round(Number(req.query.max_price));
-      const carPrice = cars.filter(car => car.price >= minPrice && car.price <= maxPrice);
-      if (!carPrice[0]) return utilities.errorstatus(res, 404, 'No Car Found Within This Price Range');
-      return utilities.successStatus(res, 200, 'data', carPrice);
-    }
-    const unsoldCars = cars.filter(car => car.status === status);
-    return utilities.successStatus(res, 200, 'data', unsoldCars);
+    const { user } = req;
+    if (user[0]) {
+      if (status) {
+        if (req.query.min_price && req.query.max_price) {
+          const minPrice = Math.round(Number(req.query.min_price));
+          const maxPrice = Math.round(Number(req.query.max_price));
+          const carPrice = cars.filter(car => car.price >= minPrice && car.price <= maxPrice);
+          if (!carPrice[0]) return utilities.errorstatus(res, 404, 'No Car Found Within This Price Range');
+          return utilities.successStatus(res, 200, 'data', carPrice);
+        }
+        const unsoldCars = cars.filter(car => car.status === status);
+        return utilities.successStatus(res, 200, 'data', unsoldCars);
+      } return utilities.successStatus(res, 200, 'data', cars);
+    } return utilities.errorstatus(res, 400, 'Invalid User, Please Sign-up');
   }
 }
+
 
 export default adsController;

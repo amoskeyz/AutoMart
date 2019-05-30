@@ -39,7 +39,7 @@ const schema = {
   }),
 
   getCar: Joi.object().keys({
-    status: Joi.string().valid('available').required(),
+    status: Joi.string().valid('available'),
     min_price: Joi.number(),
     max_price: Joi.number(),
   }),
