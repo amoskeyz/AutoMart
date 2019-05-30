@@ -6,6 +6,7 @@ import car from './data/car';
 import order from './data/order';
 
 let userToken;
+let adminToken;
 
 const { expect } = chai;
 chai.use(chaihttp);
@@ -391,6 +392,81 @@ describe('AutoMart Test', () => {
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+  });
+
+  describe('View All Unsold Cars Within A Price Range', () => {
+    it('should view all unsold cars within a price range', (done) => {
+      chai.request(app)
+        .get('/api/v1/car?status=available&min_price=50000&max_price=90000000000')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+
+    it('should not view all unsold car if it does not meet the price range', (done) => {
+      chai.request(app)
+        .get('/api/v1/car?status=available&min_price=500000000000&max_price=90000000000')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(404);
+          done();
+        });
+    });
+  });
+
+  describe('Delete Car Ad', () => {
+    it('should sign in admin', (done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signin')
+        .send(user[3])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          adminToken = res.body.data.Token;
+          done();
+        });
+    });
+
+    it('should delete a car ad', (done) => {
+      chai.request(app)
+        .delete('/api/v1/car/2')
+        .set('authtoken', adminToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+
+    it('should not delete a car ad that does not exist', (done) => {
+      chai.request(app)
+        .delete('/api/v1/car/7')
+        .set('authtoken', adminToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(404);
+          done();
+        });
+    });
+
+    it('should return an error with invild input details', (done) => {
+      chai.request(app)
+        .delete('/api/v1/car/hvhjv')
+        .set('authtoken', adminToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should not delete a car ad with unathorise user', (done) => {
+      chai.request(app)
+        .delete('/api/v1/car/2')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(401);
           done();
         });
     });

@@ -26,8 +26,9 @@ class userController {
       return utilities.errorstatus(res, 400, 'User Already Exist');
     }
     const id = users.length + 1;
+    const isAdmin = false;
     const userObj = {
-      id, firstName, lastName, email, passwordHash, phoneNumber,
+      id, firstName, lastName, email, isAdmin, passwordHash, phoneNumber,
     };
     users.push(userObj);
     return utilities.successStatus(res, 201, 'data', {
