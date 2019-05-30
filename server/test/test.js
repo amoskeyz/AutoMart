@@ -376,9 +376,19 @@ describe('AutoMart Test', () => {
   });
 
   describe('View All Unsold Car', () => {
-    it('should not view a car that does not exist', (done) => {
+    it('should view all unsold car', (done) => {
       chai.request(app)
-        .get('/api/v1/car')
+        .get('/api/v1/car?status=available')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+
+    it('should not view all unsold car with invalid input', (done) => {
+      chai.request(app)
+        .get('/api/v1/car?status=avail')
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
@@ -386,12 +396,12 @@ describe('AutoMart Test', () => {
         });
     });
 
-    it('should view all unsold car', (done) => {
+    it('should not view cars with unauthorise token', (done) => {
       chai.request(app)
-        .get('/api/v1/car?status=available')
-        .set('authtoken', userToken)
+        .get('/api/v1/car')
+        .set('authtoken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTU1ODg5NTE5MywiZXhwIjo4NjQwMDAwMDAwMDE1NTkwMDAwMDB9.o-vzr3gzF_49d1QIvslkcpsWO9qbqqK8ZeG5-LzeTHc')
         .end((err, res) => {
-          expect(res.statusCode).to.equal(200);
+          expect(res.statusCode).to.equal(400);
           done();
         });
     });
@@ -472,15 +482,27 @@ describe('AutoMart Test', () => {
     });
   });
 
-  describe('Authentication', () => {
-    it('should not post with invalid id', (done) => {
+  describe('View All Cars', () => {
+    it('should view all car that exist', (done) => {
       chai.request(app)
-        .post('/api/v1/car/')
-        .set('authtoken', 'jhosjfhaojfhoa')
+        .get('/api/v1/car')
+        .set('authtoken', userToken)
         .end((err, res) => {
-          expect(res.statusCode).to.equal(401);
+          expect(res.statusCode).to.equal(200);
           done();
         });
+    });
+
+    describe('Authentication', () => {
+      it('should not post with invalid id', (done) => {
+        chai.request(app)
+          .post('/api/v1/car/')
+          .set('authtoken', 'jhosjfhaojfhoa')
+          .end((err, res) => {
+            expect(res.statusCode).to.equal(401);
+            done();
+          });
+      });
     });
 
     it('should not post an ad with unauthorized id', (done) => {
