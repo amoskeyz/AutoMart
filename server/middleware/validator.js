@@ -123,9 +123,13 @@ class validate {
   }
 
   static validateGetCar(req, res, next) {
-    // eslint-disable-next-line camelcase
-    const { status, min_price, max_price } = req.query;
-    const validateObject = { status, min_price, max_price };
+    const {
+      // eslint-disable-next-line camelcase
+      status, min_price, max_price, state,
+    } = req.query;
+    const validateObject = {
+      status, min_price, max_price, state,
+    };
     const error = util.validateJoi(validateObject, schema.getCar);
     if (error) {
       return util.errorstatus(res, 400, error);
@@ -137,6 +141,17 @@ class validate {
     const { carId } = req.params;
     const validateObject = { carId };
     const error = util.validateJoi(validateObject, schema.carId);
+    if (error) {
+      return util.errorstatus(res, 400, error);
+    }
+    return next();
+  }
+
+  static validateFlag(req, res, next) {
+    const { carId } = req.params;
+    const { reason, description } = req.body;
+    const validateObject = { carId, reason, description };
+    const error = util.validateJoi(validateObject, schema.flag);
     if (error) {
       return util.errorstatus(res, 400, error);
     }

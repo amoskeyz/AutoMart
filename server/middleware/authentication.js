@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import users from '../model/user';
+import Utilities from '../helper/utilities';
 
 dotenv.config();
 
@@ -24,7 +25,11 @@ class authenticator {
     });
     req.decoder = verify.id;
     const isUser = users.filter(user => user.id === req.decoder);
-    req.user = isUser;
+    if (!isUser[0]) {
+      return Utilities.errorstatus(res, 401, 'Unauthorise User, Please Sign Up');
+    }
+    req.user = { id: isUser[0].id, email: isUser[0].email, isAdmin: isUser[0].isAdmin };
+    // console.log(req.user);
     return next();
   }
 }

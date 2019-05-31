@@ -7,7 +7,7 @@ const cars = [
     model: 'Camry',
     body_type: 'car',
     price: '70000000',
-    state: 'New',
+    state: 'new',
     status: 'available',
   },
   {
@@ -18,7 +18,7 @@ const cars = [
     model: 'Camry',
     body_type: 'car',
     price: '1000000',
-    state: 'New',
+    state: 'new',
     status: 'available',
   },
 ];
