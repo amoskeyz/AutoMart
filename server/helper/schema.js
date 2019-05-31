@@ -42,10 +42,17 @@ const schema = {
     status: Joi.string().valid('available'),
     min_price: Joi.number(),
     max_price: Joi.number(),
+    state: Joi.string().valid('new', 'used'),
   }),
 
   carId: Joi.object().keys({
     carId: Joi.number().required(),
+  }),
+
+  flag: Joi.object().keys({
+    carId: Joi.number().required(),
+    reason: Joi.string().required(),
+    description: Joi.string().required().min(30),
   }),
 };
 

@@ -11,6 +11,7 @@ adsRouter.patch('/car/:carId/status', authenticator.authenticateUser, adsControl
 adsRouter.patch('/car/:carId/price', authenticator.authenticateUser, validator.validateUpdateCar, adsController.updateCar);
 adsRouter.get('/car/:carId/', authenticator.authenticateUser, adsController.specificCar);
 adsRouter.get('/car', authenticator.authenticateUser, validator.validateGetCar, adsController.car);
+adsRouter.post('/flag/:carId', authenticator.authenticateUser, validator.validateFlag, adsController.flagCar);
 
 
 export default adsRouter;

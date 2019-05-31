@@ -4,6 +4,7 @@ import app from '../app';
 import user from './data/user';
 import car from './data/car';
 import order from './data/order';
+import flag from './data/flag';
 
 let userToken;
 let adminToken;
@@ -92,6 +93,16 @@ describe('AutoMart Test', () => {
           done();
         });
     });
+    it('should sign in admin', (done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signin')
+        .send(user[3])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          adminToken = res.body.data.Token;
+          done();
+        });
+    });
   });
 
   describe('Post Car Ad', () => {
@@ -126,6 +137,16 @@ describe('AutoMart Test', () => {
           done();
         });
     });
+    it('should not view cars with unauthorise token', (done) => {
+      chai.request(app)
+        .post('/api/v1/car')
+        .set('authtoken', adminToken)
+        .send(car[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(401);
+          done();
+        });
+    });
   });
 
   describe('Purchase Order', () => {
@@ -150,14 +171,25 @@ describe('AutoMart Test', () => {
           done();
         });
     });
+    it('should not create ba purchase order with unauthorise id', (done) => {
+      chai.request(app)
+        .post('/api/v1/order/1')
+        .set('authtoken', adminToken)
+        .send(order[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(401);
+          done();
+        });
+    });
 
-    it('should not make a purchase order with invalid user', (done) => {
+
+    it('should not make a purchase order if car does not exist', (done) => {
       chai.request(app)
         .post('/api/v1/order/6')
         .set('authtoken', userToken)
         .send(order[0])
         .end((err, res) => {
-          expect(res.statusCode).to.equal(400);
+          expect(res.statusCode).to.equal(404);
           done();
         });
     });
@@ -234,10 +266,10 @@ describe('AutoMart Test', () => {
     it('should not update the order price with unauthorized user token', (done) => {
       chai.request(app)
         .patch('/api/v1/order/3/price')
-        .set('authtoken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTU1ODg5NTE5MywiZXhwIjo4NjQwMDAwMDAwMDE1NTkwMDAwMDB9.o-vzr3gzF_49d1QIvslkcpsWO9qbqqK8ZeG5-LzeTHc')
+        .set('authtoken', adminToken)
         .send(order[2])
         .end((err, res) => {
-          expect(res.statusCode).to.equal(400);
+          expect(res.statusCode).to.equal(401);
           done();
         });
     });
@@ -277,9 +309,9 @@ describe('AutoMart Test', () => {
     it('should not mark a car as sold with unauthorize token', (done) => {
       chai.request(app)
         .patch('/api/v1/car/2/status')
-        .set('authtoken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTU1ODg5NTE5MywiZXhwIjo4NjQwMDAwMDAwMDE1NTkwMDAwMDB9.o-vzr3gzF_49d1QIvslkcpsWO9qbqqK8ZeG5-LzeTHc')
+        .set('authtoken', adminToken)
         .end((err, res) => {
-          expect(res.statusCode).to.equal(400);
+          expect(res.statusCode).to.equal(401);
           done();
         });
     });
@@ -333,10 +365,10 @@ describe('AutoMart Test', () => {
     it('should not update a car price with unauthorize token', (done) => {
       chai.request(app)
         .patch('/api/v1/car/3/price')
-        .set('authtoken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTU1ODg5NTE5MywiZXhwIjo4NjQwMDAwMDAwMDE1NTkwMDAwMDB9.o-vzr3gzF_49d1QIvslkcpsWO9qbqqK8ZeG5-LzeTHc')
+        .set('authtoken', adminToken)
         .send(car[2])
         .end((err, res) => {
-          expect(res.statusCode).to.equal(400);
+          expect(res.statusCode).to.equal(401);
           done();
         });
     });
@@ -367,9 +399,9 @@ describe('AutoMart Test', () => {
     it('should not view a specific car with unauthorise token', (done) => {
       chai.request(app)
         .get('/api/v1/car/2/')
-        .set('authtoken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTU1ODg5NTE5MywiZXhwIjo4NjQwMDAwMDAwMDE1NTkwMDAwMDB9.o-vzr3gzF_49d1QIvslkcpsWO9qbqqK8ZeG5-LzeTHc')
+        .set('authtoken', adminToken)
         .end((err, res) => {
-          expect(res.statusCode).to.equal(400);
+          expect(res.statusCode).to.equal(401);
           done();
         });
     });
@@ -390,16 +422,6 @@ describe('AutoMart Test', () => {
       chai.request(app)
         .get('/api/v1/car?status=avail')
         .set('authtoken', userToken)
-        .end((err, res) => {
-          expect(res.statusCode).to.equal(400);
-          done();
-        });
-    });
-
-    it('should not view cars with unauthorise token', (done) => {
-      chai.request(app)
-        .get('/api/v1/car')
-        .set('authtoken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTU1ODg5NTE5MywiZXhwIjo4NjQwMDAwMDAwMDE1NTkwMDAwMDB9.o-vzr3gzF_49d1QIvslkcpsWO9qbqqK8ZeG5-LzeTHc')
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
           done();
@@ -492,28 +514,61 @@ describe('AutoMart Test', () => {
           done();
         });
     });
+  });
 
-    describe('Authentication', () => {
-      it('should not post with invalid id', (done) => {
-        chai.request(app)
-          .post('/api/v1/car/')
-          .set('authtoken', 'jhosjfhaojfhoa')
-          .end((err, res) => {
-            expect(res.statusCode).to.equal(401);
-            done();
-          });
-      });
-    });
-
-    it('should not post an ad with unauthorized id', (done) => {
+  describe('Flag Report', () => {
+    it('should flag a car as fradulent', (done) => {
       chai.request(app)
-        .post('/api/v1/car/')
-        .set('authtoken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTU1ODg5NTE5MywiZXhwIjo4NjQwMDAwMDAwMDE1NTkwMDAwMDB9.o-vzr3gzF_49d1QIvslkcpsWO9qbqqK8ZeG5-LzeTHc')
-        .send(car[0])
+        .post('/api/v1/flag/2')
+        .set('authtoken', userToken)
+        .send(flag[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(201);
+          done();
+        });
+    });
+    it('should not flag a car with invalid input details', (done) => {
+      chai.request(app)
+        .post('/api/v1/flag/2')
+        .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
           done();
         });
     });
+
+    it('should not flag a car with unauthorise access', (done) => {
+      chai.request(app)
+        .post('/api/v1/flag/2')
+        .set('authtoken', adminToken)
+        .send(flag[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(401);
+          done();
+        });
+    });
+  });
+
+  describe('Authentication', () => {
+    it('should not post with invalid id', (done) => {
+      chai.request(app)
+        .post('/api/v1/car/')
+        .set('authtoken', 'jhosjfhaojfhoa')
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(401);
+          done();
+        });
+    });
+  });
+
+  it('should not post an ad with unauthorized id', (done) => {
+    chai.request(app)
+      .post('/api/v1/car/')
+      .set('authtoken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTU1ODg5NTE5MywiZXhwIjo4NjQwMDAwMDAwMDE1NTkwMDAwMDB9.o-vzr3gzF_49d1QIvslkcpsWO9qbqqK8ZeG5-LzeTHc')
+      .send(car[0])
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(401);
+        done();
+      });
   });
 });
