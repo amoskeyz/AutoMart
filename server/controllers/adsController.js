@@ -107,6 +107,7 @@ class adsController {
 
   static car(req, res) {
     const { status } = req.query;
+    const bodyType = req.query.body_type;
     if (status) {
       if (req.query.min_price && req.query.max_price) {
         const unsoldCars = cars.filter(car => car.status === status);
@@ -118,7 +119,13 @@ class adsController {
       }
       const unsoldCars = cars.filter(car => car.status === status);
       return utilities.successStatus(res, 200, 'data', unsoldCars);
-    } return utilities.successStatus(res, 200, 'data', cars);
+    }
+    if (bodyType) {
+      const carType = cars.filter(car => car.bodyType === bodyType);
+      if (!carType[0]) return utilities.errorstatus(res, 404, 'No Car With This Body Type Found');
+      return utilities.successStatus(res, 200, 'data', carType);
+    }
+    return utilities.successStatus(res, 200, 'data', cars);
   }
 
   static flagCar(req, res) {
