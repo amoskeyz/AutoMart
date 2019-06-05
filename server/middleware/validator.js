@@ -125,10 +125,10 @@ class validate {
   static validateGetCar(req, res, next) {
     const {
       // eslint-disable-next-line camelcase
-      status, min_price, max_price, state,
+      status, min_price, max_price, state, body_type,
     } = req.query;
     const validateObject = {
-      status, min_price, max_price, state,
+      status, min_price, max_price, state, body_type,
     };
     const error = util.validateJoi(validateObject, schema.getCar);
     if (error) {
