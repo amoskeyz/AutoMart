@@ -47,7 +47,10 @@ The features include but are not limited to:
 >- User can view all unsold cars within a price range.
 
 ### Api URL
-https://andela-automart-amos.herokuapp.com
+https://andela-automart-amos.herokuapp.com/api/v1
+
+### Api Documentation
+> Access to the API endpoints are stricted based on authorization using access tokens, which is generated when a user signs in or signs up.View API documentation for all endpoints used in this app <a href='https://andela-automart-amos.herokuapp.com/swagger'>here</a>
 
 
 ### Authors
