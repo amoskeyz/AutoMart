@@ -22,16 +22,16 @@ const schema = {
     model: Joi.string().trim().required(),
     bodyType: Joi.string().trim().required()
       .trim(),
-    price: Joi.number().integer().required(),
+    price: Joi.number().required(),
     state: Joi.string().trim().valid('new', 'used').required(),
   }),
 
   order: Joi.object().keys({
-    priceOffered: Joi.number().integer().required(),
+    priceOffered: Joi.number().required(),
   }),
 
   updateOrder: Joi.object().keys({
-    newPriceOffered: Joi.number().integer().required(),
+    newPriceOffered: Joi.number().required(),
   }),
 
   updateCar: Joi.object().keys({

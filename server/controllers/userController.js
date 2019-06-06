@@ -32,7 +32,7 @@ class userController {
     };
     users.push(userObj);
     return utilities.successStatus(res, 201, 'data', {
-      Token: token({ id: userObj.id }), id, firstName, lastName, email, passwordHash, phoneNumber,
+      token: token({ id: userObj.id }), id, firstName, lastName, email, phoneNumber,
     });
   }
 
@@ -55,7 +55,7 @@ class userController {
     });
     if (isUser && passwordcheck) {
       return utilities.successStatus(res, 200, 'data', {
-        Token: token({ id }), id, firstName, lastName, email, phoneNumber,
+        token: token({ id }), id, firstName, lastName, email, phoneNumber,
       });
     }
     return utilities.errorstatus(res, 400, 'Incorrect Password or Email');

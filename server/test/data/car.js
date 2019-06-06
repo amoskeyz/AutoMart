@@ -19,6 +19,16 @@ const car = [
   {
     price: 'wdwdw322323232',
   },
+  {
+    manufacturer: 'Toyota',
+    model: 'Camry',
+    bodyType: 'car',
+    state: 'used',
+    price: '-70000000',
+  },
+  {
+    price: '-322323232',
+  },
 ];
 
 export default car;

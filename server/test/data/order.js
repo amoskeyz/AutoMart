@@ -11,6 +11,12 @@ const orders = [
   {
     newPriceOffered: 'sdksdls',
   },
+  {
+    priceOffered: '-50000000',
+  },
+  {
+    newPriceOffered: '-345453545',
+  },
 ];
 
 export default orders;

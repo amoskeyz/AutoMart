@@ -132,6 +132,8 @@ class adsController {
     const { isAdmin } = req.user;
     const { reason, description } = req.body;
     const { carId } = req.params;
+    const car = cars.find(ca => ca.id === Number(carId));
+    if (!car) return utilities.errorstatus(res, 404, 'Car Not Found');
     if (!isAdmin) {
       const id = flags.length + 1;
       const createdOn = new Date();
