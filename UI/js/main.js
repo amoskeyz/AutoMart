@@ -1,4 +1,3 @@
-// console.log('i am here');
 const a = document.querySelectorAll('a');
 const imgg = document.querySelector('.amos');
 const purchase = document.querySelector('.purchase-btn');
@@ -25,14 +24,16 @@ const dialog = document.querySelectorAll('dialog');
 const input = document.querySelector('.iin');
 const profile = document.querySelector('.pro');
 const search = document.querySelector('.search');
-// console.log(dialog);
+const changer = document.querySelector('.changer');
+const myOrder = document.querySelector('.ord');
+const postAds = document.querySelector('.pos');
+const myAds = document.querySelector('.mads');
+
 
 harsh.addEventListener('click', (event) => {
     event.preventDefault();
     leftBar.style.display = 'inline-grid';
     leftBar.style.left = '0px';
-    // mainBar.style.display = 'none';
-    // Bar.style.display = 'none';
     harsh111.style.opacity = '0'
   });
 
@@ -41,22 +42,13 @@ harsh.addEventListener('click', (event) => {
     rightBar.style.display = 'inline-grid';
     rightBar.style.right = '0px';
     mainBar.style.opacity='0.6';
-    harsh.style.opacity = '0'
-    // mainBar.style.display = 'none';
-    // Bar.style.display = 'none';
+    harsh.style.opacity = '0';
   });
 
   search.addEventListener('click', (event) => {
     event.preventDefault();
-    // rightBar.style.display = 'inline-grid';
     rightBar.style.right = '-500px';
     harsh.style.opacity = '1';
-    // rightBar.style.display = 'none';
-    // mainBar.style.display = 'none';
-    // Bar.style.display = 'none';
-    // if(rightBar.style.right === '-500px'){
-    //     rightBar.style.display= 'none'
-    // }
     mainBar.style.opacity='1'
   });
 
@@ -64,23 +56,13 @@ harsh.addEventListener('click', (event) => {
       rightBar.style.opacity= '0'
   }
 
-
-// console.log(URL.createObjectURL(input.files[0]));
-
 input.addEventListener('input',(e)=>{
-    profile.attributes.src.value = URL.createObjectURL(input.files[0]);
-    // console.log(profile.attributes.src.value)
+    profile.attributes.src.value = URL.createObjectURL(input.files[0])
 })
-
-// console.log(purchase)
 a.forEach(car =>{
     car.addEventListener('click', (e) =>{
         let details = (e.path[0]);
-        // if(details.tagName == 'IMG'){
-        // }
-
         imgg.attributes.src.value = `${details.attributes.src.value}`;
-        console.log(details.attributes.src.value);
     })
 })
 
@@ -116,7 +98,6 @@ counterPrice.forEach(counter =>{
 purchase.addEventListener('click', (e) =>{
     purchaseDialog.showModal();
     dialog[1].className = 'grow';
-    // console.log('i am here');
 });
 
 report.addEventListener('click', (e) =>{
@@ -130,11 +111,6 @@ clo.addEventListener('click',(e)=>{
     dialog.forEach(dia =>{
         setTimeout( function(){dia.close();}, 300);
         dialog[0].classList.remove('grow');
-    })
-	// setTimeout( function(){dialog.close();}, 300);
-    // dialog.classList.remove('grow');
-    // console.log('i am here');
+    }) 
 })
 })
-
-// console.log(imgg.attributes.src)
