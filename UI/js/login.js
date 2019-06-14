@@ -36,21 +36,17 @@ let submitFlag = false;
 
 display.addEventListener('click',(event) =>{
     event.preventDefault();
-    console.log('click');
     if(input[1].value === ''){
         no.style.display = 'block';
         setTimeout( function(){no.style.display = 'none';}, 3000)
-    }else no.style.display = 'none';
-    console.log(submitFlag, checker)
+    } else no.style.display = 'none';
 	if(checker && !submitFlag){
-        console.log('im here')
         add.classList.add('move-left');
         add.classList.remove('move-right');
         image.attributes.src.value = 'img/22.jpg';
         details.style.opacity = '1';
         goBack.style.display = 'initial';
         submitFlag = true;
-        console.log(submitFlag, checker)
         return;
     }
 
@@ -85,4 +81,3 @@ window.addEventListener('load', ()=>{
         input.value = '';
     })
 })
-// console.log(submitFlag, checker)
