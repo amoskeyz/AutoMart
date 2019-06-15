@@ -14,7 +14,7 @@ class userController {
     const {
       firstName, lastName, email, password, phoneNumber,
     } = req.body;
-    const passwordHash = secure.passwordhash(password);
+    const hashpassword = secure.passwordhash(password);
 
     let isExist = false;
     users.forEach((user) => {
@@ -28,7 +28,7 @@ class userController {
     const id = users.length + 1;
     const isAdmin = false;
     const userObj = {
-      id, firstName, lastName, email, isAdmin, passwordHash, phoneNumber,
+      id, firstName, lastName, email, isAdmin, hashpassword, phoneNumber,
     };
     users.push(userObj);
     return utilities.successStatus(res, 201, 'data', {
@@ -50,7 +50,7 @@ class userController {
         ({
           id, firstName, lastName, phoneNumber,
         } = user);
-        passwordcheck = secure.compare(password, user.passwordHash);
+        passwordcheck = secure.compare(password, user.hashpassword);
       }
     });
     if (isUser && passwordcheck) {

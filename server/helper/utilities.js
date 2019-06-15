@@ -57,6 +57,25 @@ class Utilities {
     response[key] = object;
     return res.status(status).json(response);
   }
+
+  /**
+  * @static
+  * @description Creates a query that inserts an object into a table
+  * @param {string} table - table to be inserted
+  * @param {object} object - objects to insert
+  * @param {string} returing - Clause to return a value, Optional
+  * @memberof Utilities
+  */
+
+  static insertQuery(table, object, returning) {
+    let values = Object.values(object);
+    values = values.map((value) => {
+      if (typeof (value) === 'string') { return `'${value}'`; }
+      return value;
+    });
+    const insert = `INSERT into ${table} (${Object.keys(object)}) VALUES (${values}) ${returning};`;
+    return insert;
+  }
 }
 
 export default Utilities;
