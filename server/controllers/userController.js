@@ -38,6 +38,33 @@ class userController {
       return utilities.errorstatus(res, 500, 'SERVER ERROR');
     }
   }
+
+  static async signinUser(req, res) {
+    try {
+      const { email, password } = req.body;
+      const user = await dbMethods.readFromDb('users', '*', { email });
+      if (!user[0]) {
+        return utilities.errorstatus(res, 400, 'Invalid User');
+      }
+      const passwordcheck = secure.compare(password, user[0].hashpassword);
+      if (passwordcheck) {
+        const {
+          id, firstname, lastname, phonenumber,
+        } = user[0];
+        return utilities.successStatus(res, 200, 'data', {
+          token: token({ id }),
+          id,
+          firstName: firstname,
+          lastName: lastname,
+          email,
+          phoneNumber: phonenumber,
+        });
+      }
+      return utilities.errorstatus(res, 400, 'Incorrect Password or Email');
+    } catch (error) {
+      return utilities.errorstatus(res, 500, 'SERVER ERROR');
+    }
+  }
 }
 
 export default userController;

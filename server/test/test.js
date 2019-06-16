@@ -65,4 +65,34 @@ describe('AutoMart Test', () => {
         done();
       });
   });
+
+  describe('LOGIN', () => {
+    it('should sign in an existing user', (done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signin')
+        .send(user[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+    it('should return an error with incorrect input details', (done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signin')
+        .send(user[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+    it('should return error for invalid field', (done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signin')
+        .send({ email: '' })
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+  });
 });
