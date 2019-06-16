@@ -4,6 +4,8 @@ import swaggerUi from 'swagger-ui-express';
 import yaml from 'yamljs';
 import cors from 'cors';
 import router from './router/userRoute';
+import adsRouter from './router/adsRoute';
+import adminRouter from './router/adminRoute';
 import utilities from './helper/utilities';
 
 const app = express();
@@ -15,6 +17,8 @@ const swaggerdoc = yaml.load(`${__dirname}/../swagger.yaml`);
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerdoc));
 
 app.use('/api/v1', router);
+app.use('/api/v1', adsRouter);
+app.use('/api/v1', adminRouter);
 
 app.use('*', (req, res) => utilities.errorstatus(res, 404, 'This Route is Not On This Server'));
 

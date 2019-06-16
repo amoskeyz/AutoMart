@@ -1,4 +1,5 @@
 import token from '../helper/token';
+import users from '../model/user';
 import utilities from '../helper/utilities';
 import secure from '../helper/encrypt';
 import dbMethods from '../db/migrations/dbMethods';
@@ -35,8 +36,34 @@ class userController {
         token: token({ id: fetchedUser.id }), id, firstName, lastName, email, phoneNumber,
       });
     } catch (err) {
+      console.log(err);
       return utilities.errorstatus(res, 500, 'SERVER ERROR');
     }
+  }
+
+  static signinUser(req, res) {
+    const { email, password } = req.body;
+    let isUser = false;
+    let id;
+    let firstName;
+    let lastName;
+    let phoneNumber;
+    let passwordcheck;
+    users.forEach((user) => {
+      if (user.email === email) {
+        isUser = true;
+        ({
+          id, firstName, lastName, phoneNumber,
+        } = user);
+        passwordcheck = secure.compare(password, user.hashpassword);
+      }
+    });
+    if (isUser && passwordcheck) {
+      return utilities.successStatus(res, 200, 'data', {
+        token: token({ id }), id, firstName, lastName, email, phoneNumber,
+      });
+    }
+    return utilities.errorstatus(res, 400, 'Incorrect Password or Email');
   }
 }
 
