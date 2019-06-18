@@ -87,6 +87,26 @@ class validate {
     if (Number(req.body.price) < 0) return util.errorstatus(res, 400, 'Price must Not be Negative');
     return next();
   }
+
+  /**
+  * @static
+  * @description Validates a purchase order request
+  * @param {Object} req - Request object
+  * @param {Object} res - Response object
+  * @param {Object} next - Next function call
+  * @memberof Controllers
+  */
+
+  static validateOrder(req, res, next) {
+    const { priceOffered } = req.body;
+    const validateObject = { priceOffered };
+    const error = util.validateJoi(validateObject, schema.order);
+    if (error) {
+      return util.errorstatus(res, 400, error);
+    }
+    if (Number(req.body.priceOffered) < 0) return util.errorstatus(res, 400, 'Price must Not be Negative');
+    return next();
+  }
 }
 
 export default validate;
