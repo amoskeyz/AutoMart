@@ -17,6 +17,14 @@ const schema = {
       .trim(),
     password: Joi.string().required().min(8),
   }),
+  car: Joi.object().keys({
+    manufacturer: Joi.string().trim().required(),
+    model: Joi.string().trim().required(),
+    bodyType: Joi.string().trim().required()
+      .trim(),
+    price: Joi.number().required(),
+    state: Joi.string().trim().valid('new', 'used').required(),
+  }),
 };
 
 export default schema;

@@ -2,9 +2,13 @@ import chai from 'chai';
 import chaihttp from 'chai-http';
 import app from '../app';
 import user from './data/user';
+import car from './data/car';
 
 const { expect } = chai;
 chai.use(chaihttp);
+
+let userToken;
+let adminToken;
 
 describe('AutoMart Test', () => {
   describe('/Display welcome message', () => {
@@ -91,6 +95,93 @@ describe('AutoMart Test', () => {
         .send({ email: '' })
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+  });
+
+  describe('Post Car Ad', () => {
+    it('should sign in admin', (done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signin')
+        .send(user[3])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          adminToken = res.body.data.token;
+          done();
+        });
+    });
+    it('should sign in an existing user', (done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signin')
+        .send(user[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          userToken = res.body.data.token;
+          done();
+        });
+    });
+    it('should not post a car ad without user token', (done) => {
+      chai.request(app)
+        .post('/api/v1/car/')
+        .send(car[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(401);
+          done();
+        });
+    });
+
+    it('should post a car ad for an existing user', (done) => {
+      chai.request(app)
+        .post('/api/v1/car/')
+        .set('authtoken', userToken)
+        .send(car[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(201);
+          done();
+        });
+    });
+
+    it('should not post an ad with negative car price', (done) => {
+      chai.request(app)
+        .post('/api/v1/car/')
+        .set('authtoken', userToken)
+        .send(car[1])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should not post an ad with invalid car details', (done) => {
+      chai.request(app)
+        .post('/api/v1/car/')
+        .set('authtoken', userToken)
+        .send(car[4])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should not view cars with unauthorise token', (done) => {
+      chai.request(app)
+        .post('/api/v1/car')
+        .set('authtoken', adminToken)
+        .send(car[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(401);
+          done();
+        });
+    });
+  });
+  describe('Authentication', () => {
+    it('should not post a car ads with unauthorized id', (done) => {
+      chai.request(app)
+        .post('/api/v1/car')
+        .set('authtoken', 'jhosjfhaojfhoa')
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(500);
           done();
         });
     });
