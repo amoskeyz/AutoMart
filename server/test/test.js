@@ -3,6 +3,7 @@ import chaihttp from 'chai-http';
 import app from '../app';
 import user from './data/user';
 import car from './data/car';
+import order from './data/order';
 
 const { expect } = chai;
 chai.use(chaihttp);
@@ -175,6 +176,64 @@ describe('AutoMart Test', () => {
         });
     });
   });
+
+  describe('Purchase Order', () => {
+    it('should not make a purchase order with invalid input data', (done) => {
+      chai.request(app)
+        .post('/api/v1/order/1')
+        .set('authtoken', userToken)
+        .send(order[1])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should create a purchase order', (done) => {
+      chai.request(app)
+        .post('/api/v1/order/1')
+        .set('authtoken', userToken)
+        .send(order[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(201);
+          done();
+        });
+    });
+
+    it('should not make a purchase order with negative price', (done) => {
+      chai.request(app)
+        .post('/api/v1/order/1')
+        .set('authtoken', userToken)
+        .send(order[4])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+    it('should not create ba purchase order with unauthorise id', (done) => {
+      chai.request(app)
+        .post('/api/v1/order/1')
+        .set('authtoken', adminToken)
+        .send(order[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(401);
+          done();
+        });
+    });
+
+
+    it('should not make a purchase order if car does not exist', (done) => {
+      chai.request(app)
+        .post('/api/v1/order/6')
+        .set('authtoken', userToken)
+        .send(order[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(404);
+          done();
+        });
+    });
+  });
+
   describe('Authentication', () => {
     it('should not post a car ads with unauthorized id', (done) => {
       chai.request(app)
