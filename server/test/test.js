@@ -488,6 +488,28 @@ describe('AutoMart Test', () => {
     });
   });
 
+  describe('View All Unsold Car', () => {
+    it('should view all unsold car', (done) => {
+      chai.request(app)
+        .get('/api/v1/car?status=available')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+
+    it('should not view all unsold car with invalid input', (done) => {
+      chai.request(app)
+        .get('/api/v1/car?status=avail')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+  });
+
 
   describe('Authentication', () => {
     it('should not post a car ads with unauthorized id', (done) => {

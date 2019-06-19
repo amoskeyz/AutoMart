@@ -69,6 +69,15 @@ class carController {
       return utilities.errorstatus(res, 500, 'SERVER ERROR');
     }
   }
+
+  static async car(req, res) {
+    const { status } = req.query;
+    if (status) {
+      const unsoldCars = await dbMethods.readFromDb('cars', '*', { status });
+      return utilities.successStatus(res, 200, 'data', unsoldCars);
+    }
+    return utilities.errorstatus(res, 400, 'Invalid Query String');
+  }
 }
 
 
