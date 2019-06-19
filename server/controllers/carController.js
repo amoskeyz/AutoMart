@@ -55,6 +55,20 @@ class carController {
       return utilities.errorstatus(res, 500, 'SERVER ERROR');
     }
   }
+
+  static async specificCar(req, res) {
+    try {
+      const { isAdmin } = req.user;
+      const { carId } = req.params;
+      if (!isAdmin) {
+        const carCheck = await dbMethods.readFromDb('cars', '*', { id: Number(carId) });
+        if (!carCheck[0]) return utilities.errorstatus(res, 400, 'Car Does Not Exist');
+        return utilities.successStatus(res, 200, 'data', carCheck[0]);
+      } return utilities.errorstatus(res, 401, 'Unauthorise Access');
+    } catch (error) {
+      return utilities.errorstatus(res, 500, 'SERVER ERROR');
+    }
+  }
 }
 
 

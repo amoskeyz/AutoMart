@@ -455,6 +455,40 @@ describe('AutoMart Test', () => {
     });
   });
 
+  describe('View a Specific Car', () => {
+    it('should not view a car that does not exist', (done) => {
+      chai.request(app)
+        .get('/api/v1/car/5/')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should view a specific car', (done) => {
+      chai.request(app)
+        .get('/api/v1/car/3/')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+
+
+    it('should not view a specific car with unauthorise token', (done) => {
+      chai.request(app)
+        .get('/api/v1/car/2/')
+        .set('authtoken', adminToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(401);
+          done();
+        });
+    });
+  });
+
+
   describe('Authentication', () => {
     it('should not post a car ads with unauthorized id', (done) => {
       chai.request(app)
