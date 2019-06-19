@@ -234,6 +234,97 @@ describe('AutoMart Test', () => {
     });
   });
 
+  describe('Update Purchase Order', () => {
+    it('should not update the price of an order if buyerId !== userId', (done) => {
+      chai.request(app)
+        .patch('/api/v1/order/1/price')
+        .set('authtoken', userToken)
+        .send(order[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should not update the price of a purchase order is status is approved', (done) => {
+      chai.request(app)
+        .patch('/api/v1/order/2/price')
+        .set('authtoken', userToken)
+        .send(order[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should not update the price of a purchase order with negative price', (done) => {
+      chai.request(app)
+        .patch('/api/v1/order/2/price')
+        .set('authtoken', userToken)
+        .send(order[5])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should update the price of a purchase order', (done) => {
+      chai.request(app)
+        .patch('/api/v1/order/3/price')
+        .set('authtoken', userToken)
+        .send(order[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+
+
+    it('should update the price of a purchase order', (done) => {
+      chai.request(app)
+        .patch('/api/v1/order/3/price')
+        .set('authtoken', userToken)
+        .send(order[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+
+    it('should return error if order is not found', (done) => {
+      chai.request(app)
+        .patch('/api/v1/order/9/price')
+        .set('authtoken', userToken)
+        .send(order[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should not update the order price with wrong input details', (done) => {
+      chai.request(app)
+        .patch('/api/v1/order/3/price')
+        .set('authtoken', userToken)
+        .send(order[3])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should not update the order price with unauthorized user token', (done) => {
+      chai.request(app)
+        .patch('/api/v1/order/3/price')
+        .set('authtoken', adminToken)
+        .send(order[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(401);
+          done();
+        });
+    });
+  });
+
   describe('Authentication', () => {
     it('should not post a car ads with unauthorized id', (done) => {
       chai.request(app)

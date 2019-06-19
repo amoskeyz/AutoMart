@@ -33,6 +33,23 @@ class DbMethods {
     const data = await pool.query(read);
     return data.rows;
   }
+
+  /**
+  * @static
+  * @description Create a query to get last member
+  * @param {string} table - table to be inserted
+  * @param {object} specifier - what to be selected
+  * @param {string} value - By what value to be quaried
+  * @memberof Database Controllers
+  */
+
+  static async updateDbRow(table, specifier, value) {
+    const update = `UPDATE ${table} set ${Object.keys(specifier)} = '${Object.values(specifier)}'
+                  where ${Object.keys(value)} = '${Object.values(value)}'`;
+
+    const data = await pool.query(update);
+    return data.rows[0];
+  }
 }
 
 export default DbMethods;

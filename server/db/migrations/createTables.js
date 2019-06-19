@@ -46,7 +46,9 @@ const ordersTable = `CREATE TABLE IF NOT EXISTS orders(
   carid text NOT NULL,
   status text NOT NULL,
   price text NOT NULL,
-  priceOffered text NOT NULL
+  priceOffered text NOT NULL,
+  oldPriceOffered text,
+  newPriceOffered text 
   );
 `;
 
