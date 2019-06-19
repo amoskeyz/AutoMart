@@ -33,6 +33,10 @@ const schema = {
   updateOrder: Joi.object().keys({
     newPriceOffered: Joi.number().required(),
   }),
+
+  updateCar: Joi.object().keys({
+    price: Joi.number().required(),
+  }),
 };
 
 export default schema;

@@ -367,6 +367,94 @@ describe('AutoMart Test', () => {
     });
   });
 
+  describe('Update Car Price', () => {
+    it('should not update the car price on invalid input', (done) => {
+      chai.request(app)
+        .patch('/api/v1/car/1/price')
+        .set('authtoken', userToken)
+        .send(car[3])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should not update a car price that does not exist', (done) => {
+      chai.request(app)
+        .patch('/api/v1/car/12/price')
+        .set('authtoken', userToken)
+        .send(car[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should not update a car price with negative input', (done) => {
+      chai.request(app)
+        .patch('/api/v1/car/12/price')
+        .set('authtoken', userToken)
+        .send(car[5])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should post a car ad for an existing user', (done) => {
+      chai.request(app)
+        .post('/api/v1/car/')
+        .set('authtoken', userToken)
+        .send(car[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(201);
+          done();
+        });
+    });
+    it('should not update a car price that has been sold', (done) => {
+      chai.request(app)
+        .patch('/api/v1/car/3/price')
+        .set('authtoken', userToken)
+        .send(car[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+    it('should update a car price', (done) => {
+      chai.request(app)
+        .patch('/api/v1/car/4/price')
+        .set('authtoken', userToken)
+        .send(car[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+
+    it('should not update a car price with invalid owner', (done) => {
+      chai.request(app)
+        .patch('/api/v1/car/1/price')
+        .set('authtoken', userToken)
+        .send(car[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should not update a car price with unauthorize token', (done) => {
+      chai.request(app)
+        .patch('/api/v1/car/3/price')
+        .set('authtoken', adminToken)
+        .send(car[2])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(401);
+          done();
+        });
+    });
+  });
+
   describe('Authentication', () => {
     it('should not post a car ads with unauthorized id', (done) => {
       chai.request(app)

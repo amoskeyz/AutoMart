@@ -6,6 +6,7 @@ import authenticator from '../middleware/authentication';
 const carRouter = express();
 carRouter.post('/car/', authenticator.authenticateUser, validator.validateCar, carController.postAds);
 carRouter.patch('/car/:carId/status', authenticator.authenticateUser, carController.markSold);
+carRouter.patch('/car/:carId/price', authenticator.authenticateUser, validator.validateUpdateCar, carController.updateCar);
 
 
 export default carRouter;
