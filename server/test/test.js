@@ -325,6 +325,48 @@ describe('AutoMart Test', () => {
     });
   });
 
+  describe('Mark Car as Sold', () => {
+    it('should not mark car as sold if not owner of car', (done) => {
+      chai.request(app)
+        .patch('/api/v1/car/1/status')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should not mark car that does not exist', (done) => {
+      chai.request(app)
+        .patch('/api/v1/car/12/status')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should mark a car as sold', (done) => {
+      chai.request(app)
+        .patch('/api/v1/car/3/status')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+
+    it('should not mark a car as sold with unauthorize token', (done) => {
+      chai.request(app)
+        .patch('/api/v1/car/2/status')
+        .set('authtoken', adminToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(401);
+          done();
+        });
+    });
+  });
+
   describe('Authentication', () => {
     it('should not post a car ads with unauthorized id', (done) => {
       chai.request(app)

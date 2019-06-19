@@ -17,6 +17,24 @@ class adsController {
     }
     return utilities.errorstatus(res, 401, 'Unauthorise Access');
   }
+
+  static async markSold(req, res) {
+    try {
+      const { isAdmin, email } = req.user;
+      const { carId } = req.params;
+      if (!isAdmin) {
+        const carCheck = await dbMethods.readFromDb('cars', '*', { id: Number(carId) });
+        if (!carCheck[0]) return utilities.errorstatus(res, 400, 'Car Does Not Exist');
+        if (email === carCheck[0].email) {
+          await dbMethods.updateDbRow('cars', { status: 'sold' }, { id: Number(carId) });
+          const carDetails = await dbMethods.readFromDb('cars', '*', { id: Number(carId) });
+          return utilities.successStatus(res, 200, 'data', carDetails[0]);
+        } return utilities.errorstatus(res, 400, 'User Can Not Mark This Car As Sold');
+      } return utilities.errorstatus(res, 401, 'Unauthorise Access');
+    } catch (error) {
+      return utilities.errorstatus(res, 500, 'SERVER ERROR');
+    }
+  }
 }
 
 
