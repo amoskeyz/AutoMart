@@ -147,6 +147,29 @@ class validate {
     if (Number(req.body.price) < 0) return util.errorstatus(res, 400, 'Price must Not be Negative');
     return next();
   }
+
+  /**
+  * @static
+  * @description Validates a get all unsold car request
+  * @param {Object} req - Request object
+  * @param {Object} res - Response object
+  * @param {Object} next - Next function call
+  * @memberof Controllers
+  */
+
+  static validateGetCar(req, res, next) {
+    const {
+      status,
+    } = req.query;
+    const validateObject = {
+      status,
+    };
+    const error = util.validateJoi(validateObject, schema.getCar);
+    if (error) {
+      return util.errorstatus(res, 400, error);
+    }
+    return next();
+  }
 }
 
 export default validate;

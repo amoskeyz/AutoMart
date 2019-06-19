@@ -37,6 +37,10 @@ const schema = {
   updateCar: Joi.object().keys({
     price: Joi.number().required(),
   }),
+
+  getCar: Joi.object().keys({
+    status: Joi.string().valid('available'),
+  }),
 };
 
 export default schema;
