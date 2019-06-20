@@ -50,6 +50,22 @@ class DbMethods {
     const data = await pool.query(update);
     return data.rows[0];
   }
+
+  /**
+  * @static
+  * @description Create a query to delete a row
+  * @param {string} table - table to be inserted
+  * @param {object} specifier - what to be selected
+  * @param {string} order - By what value to be quaried
+  * @memberof Database Controllers
+  */
+
+  static async deleteDbRow(table, specifier) {
+    const deleteRow = `DELETE from ${table} WHERE ${Object.keys(specifier)} = '${Object.values(specifier)}'`;
+
+    const data = await pool.query(deleteRow);
+    return data.rows[0];
+  }
 }
 
 export default DbMethods;

@@ -532,6 +532,59 @@ describe('AutoMart Test', () => {
     });
   });
 
+  describe('Delete Car Ad', () => {
+    it('should sign in admin', (done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signin')
+        .send(user[3])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          adminToken = res.body.data.token;
+          done();
+        });
+    });
+
+    it('should delete a car ad', (done) => {
+      chai.request(app)
+        .delete('/api/v1/car/2')
+        .set('authtoken', adminToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+
+    it('should not delete a car ad that does not exist', (done) => {
+      chai.request(app)
+        .delete('/api/v1/car/7')
+        .set('authtoken', adminToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(404);
+          done();
+        });
+    });
+
+    it('should return an error with invild input details', (done) => {
+      chai.request(app)
+        .delete('/api/v1/car/hvhjv')
+        .set('authtoken', adminToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should not delete a car ad with unathorise user', (done) => {
+      chai.request(app)
+        .delete('/api/v1/car/2')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(401);
+          done();
+        });
+    });
+  });
+
 
   describe('Authentication', () => {
     it('should not post a car ads with unauthorized id', (done) => {
