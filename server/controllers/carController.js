@@ -94,6 +94,18 @@ class carController {
     }
     return utilities.successStatus(res, 200, 'data', cars);
   }
+
+  static async flagCar(req, res) {
+    const { isAdmin } = req.user;
+    const { reason, description } = req.body;
+    const { carId } = req.params;
+    const car = await dbMethods.readFromDb('cars', '*', { id: carId });
+    if (!car[0]) return utilities.errorstatus(res, 404, 'Car Not Found');
+    if (!isAdmin) {
+      const flagObj = await dbMethods.insertToDb('flags', { carId, reason, description }, 'RETURNING *');
+      return utilities.successStatus(res, 201, 'data', flagObj[0]);
+    } return utilities.errorstatus(res, 401, 'Unauthorise Access');
+  }
 }
 
 

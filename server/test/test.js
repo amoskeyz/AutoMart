@@ -4,6 +4,7 @@ import app from '../app';
 import user from './data/user';
 import car from './data/car';
 import order from './data/order';
+import flag from './data/flag';
 
 const { expect } = chai;
 chai.use(chaihttp);
@@ -618,6 +619,49 @@ describe('AutoMart Test', () => {
     });
   });
 
+  describe('Flag Report', () => {
+    it('should flag a car as fradulent', (done) => {
+      chai.request(app)
+        .post('/api/v1/flag/3')
+        .set('authtoken', userToken)
+        .send(flag[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(201);
+          done();
+        });
+    });
+
+    it('should flag a car as fradulent', (done) => {
+      chai.request(app)
+        .post('/api/v1/flag/39')
+        .set('authtoken', userToken)
+        .send(flag[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(404);
+          done();
+        });
+    });
+    it('should not flag a car with invalid input details', (done) => {
+      chai.request(app)
+        .post('/api/v1/flag/2')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          done();
+        });
+    });
+
+    it('should not flag a car with unauthorise access', (done) => {
+      chai.request(app)
+        .post('/api/v1/flag/3')
+        .set('authtoken', adminToken)
+        .send(flag[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(401);
+          done();
+        });
+    });
+  });
 
   describe('Authentication', () => {
     it('should not post a car ads with unauthorized id', (done) => {

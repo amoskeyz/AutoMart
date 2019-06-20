@@ -4,6 +4,7 @@ import users from '../../model/user';
 import cars from '../../model/cars';
 import orders from '../../model/order';
 import Util from '../../helper/utilities';
+import flags from '../../model/flags';
 
 function insertMultiple(table, array, returning = '') {
   let insert = '';
@@ -52,17 +53,28 @@ const ordersTable = `CREATE TABLE IF NOT EXISTS orders(
   );
 `;
 
+const flagsTable = `CREATE TABLE IF NOT EXISTS flags(
+  id serial PRIMARY KEY,
+  created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  carid text NOT NULL,
+  reason text NOT NULL,
+  description text NOT NULL
+  );
+`;
+
 
 async function create() {
   try {
     console.log('seeding database...');
-    const createTable = `${usersTable}${carsTable}${ordersTable}`;
+    const createTable = `${usersTable}${carsTable}${ordersTable}${flagsTable}`;
 
     await pool.query(createTable);
 
     await pool.query(insertMultiple('users', users));
     await pool.query(insertMultiple('cars', cars));
     await pool.query(insertMultiple('orders', orders));
+    await pool.query(insertMultiple('flags', flags));
+
     console.log('created all tables ');
   } catch (error) {
     console.log(error);

@@ -48,6 +48,13 @@ const schema = {
   carId: Joi.object().keys({
     carId: Joi.number().required(),
   }),
+
+  flag: Joi.object().keys({
+    carId: Joi.number().required(),
+    reason: Joi.string().required(),
+    description: Joi.string().required().min(30),
+  }),
+
 };
 
 export default schema;
