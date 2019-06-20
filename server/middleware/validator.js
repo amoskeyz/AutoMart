@@ -171,6 +171,25 @@ class validate {
     }
     return next();
   }
+
+  /**
+  * @static
+  * @description Validates a car id request
+  * @param {Object} req - Request object
+  * @param {Object} res - Response object
+  * @param {Object} next - Next function call
+  * @memberof Controllers
+  */
+
+  static validateCarId(req, res, next) {
+    const { carId } = req.params;
+    const validateObject = { carId };
+    const error = util.validateJoi(validateObject, schema.carId);
+    if (error) {
+      return util.errorstatus(res, 400, error);
+    }
+    return next();
+  }
 }
 
 export default validate;

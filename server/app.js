@@ -6,6 +6,8 @@ import cors from 'cors';
 import router from './router/userRoute';
 import carRouter from './router/carRoute';
 import orderRouter from './router/orderRoute';
+import adminRouter from './router/adminRoute';
+
 import utilities from './helper/utilities';
 
 const app = express();
@@ -19,6 +21,8 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerdoc));
 app.use('/api/v1', router);
 app.use('/api/v1', carRouter);
 app.use('/api/v1', orderRouter);
+app.use('/api/v1', adminRouter);
+
 
 app.use('*', (req, res) => utilities.errorstatus(res, 404, 'This Route is Not On This Server'));
 
