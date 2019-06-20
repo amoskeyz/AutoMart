@@ -73,6 +73,14 @@ class carController {
   static async car(req, res) {
     const { status } = req.query;
     if (status) {
+      if (req.query.min_price && req.query.max_price) {
+        const unsoldCars = await dbMethods.readFromDb('cars', '*', { status });
+        const minPrice = Math.round(Number(req.query.min_price));
+        const maxPrice = Math.round(Number(req.query.max_price));
+        const carPrice = unsoldCars.filter(car => car.price >= minPrice && car.price <= maxPrice);
+        if (!carPrice[0]) return utilities.errorstatus(res, 404, 'No Car Found Within This Price Range');
+        return utilities.successStatus(res, 200, 'data', carPrice);
+      }
       const unsoldCars = await dbMethods.readFromDb('cars', '*', { status });
       return utilities.successStatus(res, 200, 'data', unsoldCars);
     }
