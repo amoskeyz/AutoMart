@@ -1,5 +1,6 @@
 import utilities from '../helper/utilities';
 import dbMethods from '../db/migrations/dbMethods';
+import pool from '../db/config/config';
 
 
 class carController {
@@ -72,6 +73,7 @@ class carController {
 
   static async car(req, res) {
     const { status } = req.query;
+    const cars = await pool.query('select * from cars');
     if (status) {
       if (req.query.min_price && req.query.max_price) {
         const unsoldCars = await dbMethods.readFromDb('cars', '*', { status });
@@ -84,7 +86,7 @@ class carController {
       const unsoldCars = await dbMethods.readFromDb('cars', '*', { status });
       return utilities.successStatus(res, 200, 'data', unsoldCars);
     }
-    return utilities.errorstatus(res, 400, 'Invalid Query String');
+    return utilities.successStatus(res, 200, 'data', cars);
   }
 }
 
