@@ -510,6 +510,28 @@ describe('AutoMart Test', () => {
     });
   });
 
+  describe('View All Unsold Cars Within A Price Range', () => {
+    it('should view all unsold cars within a price range', (done) => {
+      chai.request(app)
+        .get('/api/v1/car?status=available&min_price=50000&max_price=90000000000')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+
+    it('should not view all unsold car if it does not meet the price range', (done) => {
+      chai.request(app)
+        .get('/api/v1/car?status=available&min_price=500000000000&max_price=90000000000')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(404);
+          done();
+        });
+    });
+  });
+
 
   describe('Authentication', () => {
     it('should not post a car ads with unauthorized id', (done) => {
