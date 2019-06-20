@@ -585,6 +585,18 @@ describe('AutoMart Test', () => {
     });
   });
 
+  describe('View All Cars', () => {
+    it('should view all car that exist', (done) => {
+      chai.request(app)
+        .get('/api/v1/car')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+  });
+
 
   describe('Authentication', () => {
     it('should not post a car ads with unauthorized id', (done) => {
