@@ -597,6 +597,27 @@ describe('AutoMart Test', () => {
     });
   });
 
+  describe('View All Cars By Body Type', () => {
+    it('should view all car that exist', (done) => {
+      chai.request(app)
+        .get('/api/v1/car?body_type=car')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+    it('should not view all car that does not exist with a particular body type', (done) => {
+      chai.request(app)
+        .get('/api/v1/car?body_type=van')
+        .set('authtoken', userToken)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(404);
+          done();
+        });
+    });
+  });
+
 
   describe('Authentication', () => {
     it('should not post a car ads with unauthorized id', (done) => {
