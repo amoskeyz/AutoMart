@@ -73,6 +73,7 @@ class carController {
 
   static async car(req, res) {
     const { status } = req.query;
+    const bodyType = req.query.body_type;
     const cars = await pool.query('select * from cars');
     if (status) {
       if (req.query.min_price && req.query.max_price) {
@@ -85,6 +86,11 @@ class carController {
       }
       const unsoldCars = await dbMethods.readFromDb('cars', '*', { status });
       return utilities.successStatus(res, 200, 'data', unsoldCars);
+    }
+    if (bodyType) {
+      const carType = await dbMethods.readFromDb('cars', '*', { bodytype: bodyType });
+      if (!carType[0]) return utilities.errorstatus(res, 404, 'No Car With This Body Type Found');
+      return utilities.successStatus(res, 200, 'data', carType);
     }
     return utilities.successStatus(res, 200, 'data', cars);
   }
