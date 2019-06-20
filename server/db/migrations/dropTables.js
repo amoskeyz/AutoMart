@@ -10,6 +10,7 @@ async function deleteTables() {
     await pool.query(dropUsersTable);
     await pool.query(dropCarsTable);
     await pool.query(dropOrdersTable);
+    await pool.query('DROP TABLE flags');
     console.log('Tables deleted');
   } catch (error) {
     console.log('Error dropping Tables');

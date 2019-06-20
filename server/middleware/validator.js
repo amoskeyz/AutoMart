@@ -190,6 +190,26 @@ class validate {
     }
     return next();
   }
+
+  /**
+  * @static
+  * @description Validates a flag request
+  * @param {Object} req - Request object
+  * @param {Object} res - Response object
+  * @param {Object} next - Next function call
+  * @memberof Controllers
+  */
+
+  static validateFlag(req, res, next) {
+    const { carId } = req.params;
+    const { reason, description } = req.body;
+    const validateObject = { carId, reason, description };
+    const error = util.validateJoi(validateObject, schema.flag);
+    if (error) {
+      return util.errorstatus(res, 400, error);
+    }
+    return next();
+  }
 }
 
 export default validate;
