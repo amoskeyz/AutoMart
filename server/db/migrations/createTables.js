@@ -22,7 +22,7 @@ const usersTable = `CREATE TABLE IF NOT EXISTS users(
   hashpassword text NOT NULL,
   phonenumber text, 
   isadmin boolean NOT NULL,
-  profilepic text DEFAULT 'https://i.imgur.com/jIsCgyA.jpg'
+  profilepic text DEFAULT 'http://res.cloudinary.com/demo/image/upload/v1340625837/4srvcynxrf5j87niqcx6w.jpg'
   );
 `;
 
@@ -36,7 +36,7 @@ const carsTable = `CREATE TABLE IF NOT EXISTS cars(
   price text NOT NULL,
   state text NOT NULL, 
   status text NOT NULL,
-  carimage text DEFAULT 'https://i.imgur.com/jIsCgyA.jpg'
+  carimage text DEFAULT 'http://res.cloudinary.com/demo/image/upload/v1340625837/4srvcynxrf5j87niqcx6w.jpg'
   );
 `;
 

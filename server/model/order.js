@@ -9,7 +9,7 @@ const orders = [
   {
     buyerId: '1',
     carId: '1',
-    status: 'sold',
+    status: 'approved',
     price: '70000000',
     priceOffered: '50000000',
   },

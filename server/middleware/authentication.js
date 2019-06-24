@@ -24,8 +24,24 @@ class authenticator {
       req.user = { id: isUser[0].id, email: isUser[0].email, isAdmin: isUser[0].isadmin };
       return next();
     } catch (error) {
-      return Utilities.errorstatus(res, 500, 'SERVER ERROR');
+      return Utilities.errorstatus(res, 401, 'Unauthorization User');
     }
+  }
+
+  static isUser(req, res, next) {
+    const { isAdmin } = req.user;
+    if (isAdmin) {
+      return Utilities.errorstatus(res, 403, 'Forbidden, You Are not allowed to perform this action');
+    }
+    return next();
+  }
+
+  static isAdmin(req, res, next) {
+    const { isAdmin } = req.user;
+    if (!isAdmin) {
+      return Utilities.errorstatus(res, 403, 'Forbidden, You Are not allowed to perform this action');
+    }
+    return next();
   }
 }
 
