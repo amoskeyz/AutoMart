@@ -32,6 +32,8 @@ describe('AutoMart Test', () => {
         .send(user[0])
         .end((err, res) => {
           expect(res.statusCode).to.equal(201);
+          expect(res.body).to.have.property('data');
+          expect(res.body.data).to.have.property('token');
           done();
         });
     });
@@ -41,6 +43,8 @@ describe('AutoMart Test', () => {
         .send(user[1])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
+          expect(res.body).to.have.property('error').with.lengthOf(1);
           done();
         });
     });
@@ -50,6 +54,8 @@ describe('AutoMart Test', () => {
         .send(user[0])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
+          expect(res.body.error).to.equal('User Already Exist');
           done();
         });
     });
@@ -59,6 +65,7 @@ describe('AutoMart Test', () => {
         .send({ firstName: '' })
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error').with.lengthOf(6);
           done();
         });
     });
@@ -68,6 +75,7 @@ describe('AutoMart Test', () => {
       .post('/api/v1/auth/signfgfgup')
       .end((err, res) => {
         expect(res.statusCode).to.equal(404);
+        expect(res.body).to.have.property('error');
         done();
       });
   });
@@ -79,6 +87,8 @@ describe('AutoMart Test', () => {
         .send(user[0])
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.property('data');
+          expect(res.body.data).to.have.property('token');
           done();
         });
     });
@@ -88,6 +98,7 @@ describe('AutoMart Test', () => {
         .send(user[2])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -97,6 +108,7 @@ describe('AutoMart Test', () => {
         .send({ email: '' })
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -109,6 +121,9 @@ describe('AutoMart Test', () => {
         .send(user[3])
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.property('data');
+          expect(res.body.data).to.have.property('token');
+          expect(res.body.data.firstName).to.equal('admin');
           adminToken = res.body.data.token;
           done();
         });
@@ -119,6 +134,8 @@ describe('AutoMart Test', () => {
         .send(user[0])
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.property('data');
+          expect(res.body.data).to.have.property('token');
           userToken = res.body.data.token;
           done();
         });
@@ -129,6 +146,7 @@ describe('AutoMart Test', () => {
         .send(car[0])
         .end((err, res) => {
           expect(res.statusCode).to.equal(401);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -140,6 +158,7 @@ describe('AutoMart Test', () => {
         .send(car[0])
         .end((err, res) => {
           expect(res.statusCode).to.equal(201);
+          expect(res.body).to.have.property('data');
           done();
         });
     });
@@ -151,6 +170,7 @@ describe('AutoMart Test', () => {
         .send(car[1])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -162,17 +182,19 @@ describe('AutoMart Test', () => {
         .send(car[4])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
 
-    it('should not view cars with unauthorise token', (done) => {
+    it('should not post  cars with unauthorise token', (done) => {
       chai.request(app)
         .post('/api/v1/car')
         .set('authtoken', adminToken)
         .send(car[0])
         .end((err, res) => {
-          expect(res.statusCode).to.equal(401);
+          expect(res.statusCode).to.equal(403);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -186,6 +208,7 @@ describe('AutoMart Test', () => {
         .send(order[1])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -197,6 +220,8 @@ describe('AutoMart Test', () => {
         .send(order[0])
         .end((err, res) => {
           expect(res.statusCode).to.equal(201);
+          expect(res.body).to.have.property('data');
+          expect(res.body.data).to.have.property('id');
           done();
         });
     });
@@ -208,16 +233,18 @@ describe('AutoMart Test', () => {
         .send(order[4])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
-    it('should not create ba purchase order with unauthorise id', (done) => {
+    it('should not create a purchase order with unauthorise id', (done) => {
       chai.request(app)
         .post('/api/v1/order/1')
         .set('authtoken', adminToken)
         .send(order[0])
         .end((err, res) => {
-          expect(res.statusCode).to.equal(401);
+          expect(res.statusCode).to.equal(403);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -230,6 +257,7 @@ describe('AutoMart Test', () => {
         .send(order[0])
         .end((err, res) => {
           expect(res.statusCode).to.equal(404);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -243,6 +271,7 @@ describe('AutoMart Test', () => {
         .send(order[2])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -254,6 +283,7 @@ describe('AutoMart Test', () => {
         .send(order[2])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -265,6 +295,7 @@ describe('AutoMart Test', () => {
         .send(order[5])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -276,6 +307,8 @@ describe('AutoMart Test', () => {
         .send(order[2])
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.property('data');
+          expect(res.body.data).to.have.property('id');
           done();
         });
     });
@@ -288,6 +321,8 @@ describe('AutoMart Test', () => {
         .send(order[2])
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.property('data');
+          expect(res.body.data).to.have.property('id');
           done();
         });
     });
@@ -299,6 +334,7 @@ describe('AutoMart Test', () => {
         .send(order[2])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -310,6 +346,7 @@ describe('AutoMart Test', () => {
         .send(order[3])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -320,7 +357,8 @@ describe('AutoMart Test', () => {
         .set('authtoken', adminToken)
         .send(order[2])
         .end((err, res) => {
-          expect(res.statusCode).to.equal(401);
+          expect(res.statusCode).to.equal(403);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -333,6 +371,7 @@ describe('AutoMart Test', () => {
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -343,6 +382,7 @@ describe('AutoMart Test', () => {
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -353,6 +393,8 @@ describe('AutoMart Test', () => {
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.property('data');
+          expect(res.body.data).to.have.property('id');
           done();
         });
     });
@@ -362,7 +404,8 @@ describe('AutoMart Test', () => {
         .patch('/api/v1/car/2/status')
         .set('authtoken', adminToken)
         .end((err, res) => {
-          expect(res.statusCode).to.equal(401);
+          expect(res.statusCode).to.equal(403);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -376,6 +419,7 @@ describe('AutoMart Test', () => {
         .send(car[3])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -387,6 +431,7 @@ describe('AutoMart Test', () => {
         .send(car[2])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -398,6 +443,7 @@ describe('AutoMart Test', () => {
         .send(car[5])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -409,6 +455,8 @@ describe('AutoMart Test', () => {
         .send(car[0])
         .end((err, res) => {
           expect(res.statusCode).to.equal(201);
+          expect(res.body).to.have.property('data');
+          expect(res.body.data).to.have.property('id');
           done();
         });
     });
@@ -419,6 +467,7 @@ describe('AutoMart Test', () => {
         .send(car[2])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -429,6 +478,7 @@ describe('AutoMart Test', () => {
         .send(car[2])
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.property('data');
           done();
         });
     });
@@ -440,6 +490,7 @@ describe('AutoMart Test', () => {
         .send(car[2])
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -450,7 +501,8 @@ describe('AutoMart Test', () => {
         .set('authtoken', adminToken)
         .send(car[2])
         .end((err, res) => {
-          expect(res.statusCode).to.equal(401);
+          expect(res.statusCode).to.equal(403);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -462,7 +514,8 @@ describe('AutoMart Test', () => {
         .get('/api/v1/car/5/')
         .set('authtoken', userToken)
         .end((err, res) => {
-          expect(res.statusCode).to.equal(400);
+          expect(res.statusCode).to.equal(404);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -473,6 +526,8 @@ describe('AutoMart Test', () => {
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.property('data');
+          expect(res.body.data).to.have.property('id');
           done();
         });
     });
@@ -483,7 +538,8 @@ describe('AutoMart Test', () => {
         .get('/api/v1/car/2/')
         .set('authtoken', adminToken)
         .end((err, res) => {
-          expect(res.statusCode).to.equal(401);
+          expect(res.statusCode).to.equal(403);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -496,6 +552,7 @@ describe('AutoMart Test', () => {
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.property('data');
           done();
         });
     });
@@ -506,6 +563,7 @@ describe('AutoMart Test', () => {
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -518,6 +576,7 @@ describe('AutoMart Test', () => {
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.property('data');
           done();
         });
     });
@@ -528,6 +587,7 @@ describe('AutoMart Test', () => {
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(404);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -540,6 +600,8 @@ describe('AutoMart Test', () => {
         .send(user[3])
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.property('data');
+          expect(res.body.data).to.have.property('id');
           adminToken = res.body.data.token;
           done();
         });
@@ -551,6 +613,7 @@ describe('AutoMart Test', () => {
         .set('authtoken', adminToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.property('data');
           done();
         });
     });
@@ -561,6 +624,7 @@ describe('AutoMart Test', () => {
         .set('authtoken', adminToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(404);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -571,6 +635,7 @@ describe('AutoMart Test', () => {
         .set('authtoken', adminToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -580,7 +645,8 @@ describe('AutoMart Test', () => {
         .delete('/api/v1/car/2')
         .set('authtoken', userToken)
         .end((err, res) => {
-          expect(res.statusCode).to.equal(401);
+          expect(res.statusCode).to.equal(403);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -590,9 +656,10 @@ describe('AutoMart Test', () => {
     it('should view all car that exist', (done) => {
       chai.request(app)
         .get('/api/v1/car')
-        .set('authtoken', userToken)
+        .set('authtoken', adminToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.property('data');
           done();
         });
     });
@@ -605,6 +672,7 @@ describe('AutoMart Test', () => {
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.property('data');
           done();
         });
     });
@@ -614,6 +682,7 @@ describe('AutoMart Test', () => {
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(404);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -627,6 +696,8 @@ describe('AutoMart Test', () => {
         .send(flag[0])
         .end((err, res) => {
           expect(res.statusCode).to.equal(201);
+          expect(res.body).to.have.property('data');
+          expect(res.body.data).to.have.property('id');
           done();
         });
     });
@@ -638,6 +709,7 @@ describe('AutoMart Test', () => {
         .send(flag[0])
         .end((err, res) => {
           expect(res.statusCode).to.equal(404);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -647,6 +719,7 @@ describe('AutoMart Test', () => {
         .set('authtoken', userToken)
         .end((err, res) => {
           expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -657,7 +730,8 @@ describe('AutoMart Test', () => {
         .set('authtoken', adminToken)
         .send(flag[0])
         .end((err, res) => {
-          expect(res.statusCode).to.equal(401);
+          expect(res.statusCode).to.equal(403);
+          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -669,7 +743,8 @@ describe('AutoMart Test', () => {
         .post('/api/v1/car')
         .set('authtoken', 'jhosjfhaojfhoa')
         .end((err, res) => {
-          expect(res.statusCode).to.equal(500);
+          expect(res.statusCode).to.equal(401);
+          expect(res.body).to.have.property('error');
           done();
         });
     });

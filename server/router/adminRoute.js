@@ -5,6 +5,6 @@ import authenticator from '../middleware/authentication';
 
 const adminRouter = express();
 
-adminRouter.delete('/car/:carId', authenticator.authenticateUser, validator.validateCarId, adminController.deleteCar);
+adminRouter.delete('/car/:carId', authenticator.authenticateUser, authenticator.isAdmin, validator.validateCarId, adminController.deleteCar);
 
 export default adminRouter;

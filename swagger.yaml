@@ -26,7 +26,7 @@ tags:
     description: "API flag car in the app"
 
   - name : "Admin"
-   description: "API admin in the app"
+    description: "API admin in the app"
 paths:
   /:
     get: 
@@ -62,6 +62,8 @@ paths:
                   type: string
                 password:
                   type: string
+                phoneNumber:
+                  type: number
       responses:
         201:
           description: Created
@@ -147,7 +149,7 @@ paths:
           
     get:
       tags:
-        - Cars
+        - Admin
       summary : View all posted ads whether sold or available.
       security:
         - ApiKeyAuth: []

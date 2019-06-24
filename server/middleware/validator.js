@@ -29,6 +29,7 @@ class validate {
     req.body.lastName = lastName.trim();
     req.body.password = password.trim();
     req.body.email = email.toLowerCase().trim();
+
     return next();
   }
 
@@ -51,11 +52,14 @@ class validate {
     };
 
     const error = util.validateJoi(validateObject, schema.signin);
+
     if (error) {
       return util.errorstatus(res, 400, error);
     }
+
     req.body.password = password.trim();
     req.body.email = email.toLowerCase().trim();
+
     return next();
   }
 
@@ -80,10 +84,12 @@ class validate {
     if (error) {
       return util.errorstatus(res, 400, error);
     }
+
     req.body.manufacturer = manufacturer.trim();
     req.body.model = model.trim();
     req.body.bodyType = bodyType.trim();
     req.body.state = state.trim();
+
     if (Number(req.body.price) < 0) return util.errorstatus(res, 400, 'Price must Not be Negative');
     return next();
   }
@@ -100,10 +106,13 @@ class validate {
   static validateOrder(req, res, next) {
     const { priceOffered } = req.body;
     const validateObject = { priceOffered };
+
     const error = util.validateJoi(validateObject, schema.order);
+
     if (error) {
       return util.errorstatus(res, 400, error);
     }
+
     if (Number(req.body.priceOffered) < 0) return util.errorstatus(res, 400, 'Price must Not be Negative');
     return next();
   }
@@ -120,10 +129,13 @@ class validate {
   static validateUpdateOrder(req, res, next) {
     const { newPriceOffered } = req.body;
     const validateObject = { newPriceOffered };
+
     const error = util.validateJoi(validateObject, schema.updateOrder);
+
     if (error) {
       return util.errorstatus(res, 400, error);
     }
+
     if (Number(req.body.newPriceOffered) < 0) return util.errorstatus(res, 400, 'Price must Not be Negative');
     return next();
   }
@@ -140,10 +152,13 @@ class validate {
   static validateUpdateCar(req, res, next) {
     const { price } = req.body;
     const validateObject = { price };
+
     const error = util.validateJoi(validateObject, schema.updateCar);
+
     if (error) {
       return util.errorstatus(res, 400, error);
     }
+
     if (Number(req.body.price) < 0) return util.errorstatus(res, 400, 'Price must Not be Negative');
     return next();
   }
@@ -162,13 +177,16 @@ class validate {
       // eslint-disable-next-line camelcase
       status, min_price, max_price, body_type,
     } = req.query;
+
     const validateObject = {
       status, min_price, max_price, body_type,
     };
+
     const error = util.validateJoi(validateObject, schema.getCar);
     if (error) {
       return util.errorstatus(res, 400, error);
     }
+
     return next();
   }
 
@@ -184,10 +202,13 @@ class validate {
   static validateCarId(req, res, next) {
     const { carId } = req.params;
     const validateObject = { carId };
+
     const error = util.validateJoi(validateObject, schema.carId);
+
     if (error) {
       return util.errorstatus(res, 400, error);
     }
+
     return next();
   }
 
@@ -203,11 +224,14 @@ class validate {
   static validateFlag(req, res, next) {
     const { carId } = req.params;
     const { reason, description } = req.body;
+
     const validateObject = { carId, reason, description };
     const error = util.validateJoi(validateObject, schema.flag);
+
     if (error) {
       return util.errorstatus(res, 400, error);
     }
+
     return next();
   }
 }
