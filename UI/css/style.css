@@ -602,13 +602,20 @@ font-weight: 900;
     justify-content: center;  
 }
   
+form{
+	width: 100%;
+	padding-top:50px
+}
 .signup-right{
+	position: relative;
    padding-top: 20px;
     background: white;
     width:300px;
     height: 800%;
     z-index: 0;
-    border: 1px solid var(--theme-color);
+	border: 1px solid var(--theme-color);
+	display:flex;
+	align-items: center;
 }
 .signup-left{
     z-index: 0;
@@ -664,6 +671,7 @@ font-weight: 900;
     color: white;
     border-radius: 5px;
 }
+
 
 .contact-container{
     font-family: 'Exo 2', sans-serif;
@@ -727,6 +735,50 @@ footer{
     align-items: center;
     justify-content: center;
 }
+
+.loader {
+	border: 5px solid #f3f3f3;
+	border-radius: 50%;
+	border-top: 5px solid #3498db;
+	width: 20px;
+	height: 20px;
+	animation: spin 1s linear infinite;
+	position: absolute;
+	margin-top: -5px;
+	/* padding:  */
+
+  }
+  .deet{
+	  position: absolute;
+	  top:0;
+	  /* border: 1px solid green; */
+	  width: 95%;
+	  color: rgb(23, 148, 23);
+	  font-weight: bold;
+	  box-shadow: 0px 4px 4px -3px gray;
+	  margin: 0 8px;
+	  margin-bottom: 5px;
+	  padding:5px 0;
+	  font: 14px;
+	  transform: scale(0);
+	  transition: all 0.5s ease;
+  }
+
+  .deet > p{
+	  padding: 1px;
+	  margin:  8px;
+  }
+
+  .deet-message{
+	  color: grey;
+	  font-weight:400;
+	  margin-bottom: 20px
+  }
+  
+  @keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+  }
 @keyframes drop{
     0%{ transform: translateY(-1000px) }
     70%{ transform: translateY(-600px)}
