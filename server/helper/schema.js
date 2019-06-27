@@ -17,6 +17,12 @@ const schema = {
       .trim(),
     password: Joi.string().required().min(8),
   }),
+
+  user: Joi.object().keys({
+    email: Joi.string().email().required()
+      .trim(),
+  }),
+
   car: Joi.object().keys({
     manufacturer: Joi.string().trim().required(),
     model: Joi.string().trim().required(),
