@@ -112,6 +112,28 @@ describe('AutoMart Test', () => {
           done();
         });
     });
+
+    it('should return user details', (done) => {
+      chai.request(app)
+        .post('/api/v1/user')
+        .send(user[0])
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.property('data');
+          done();
+        });
+    });
+
+    it('should return error with invalid details', (done) => {
+      chai.request(app)
+        .post('/api/v1/user')
+        .send({ email: '' })
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
   });
 
   describe('Post Car Ad', () => {
