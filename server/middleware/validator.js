@@ -63,6 +63,25 @@ class validate {
     return next();
   }
 
+  static validateUser(req, res, next) {
+    const {
+      email,
+    } = req.body;
+
+    const validateObject = {
+      email,
+    };
+
+    const error = util.validateJoi(validateObject, schema.user);
+
+    if (error) {
+      return util.errorstatus(res, 400, error);
+    }
+    req.body.email = email.toLowerCase().trim();
+
+    return next();
+  }
+
   /**
   * @static
   * @description Validates a car input request
