@@ -16,64 +16,10 @@ body{
     margin: 0;
 }
 
-/*
-.nav-bar > label{
-	margin: 0 40px 0 0;
-	font-size:26px;
-	line-height: 70px;
-	display: none;
-}
-
-#toggle{
-	display: none;
-}
-*/
-
-
-
-/*
-@media only screen and (max-width: 500px){
-	.nav-bar > labels
-	#toggle:ckecked{
-		display: block
-	}
-} 
-*/
-
 :root{
     --theme-color: slateblue;
     --dark-theme-color: darkslateblue;
 }
-
-/*
-.nav-bar{
-    font-family: 'Exo 2', sans-serif;
-    box-shadow: 1px 0px 20px 2px grey;
-    width: 100%;
-    display: flex;
-    height: 40px;
-    background: var(--theme-color);
-    justify-content: space-between; 
-    padding-right:70px;
-    padding-top: 15px;
-    z-index: 3;
-    transition: top 0.5s ease-out;   
-}
-.menu > a{
-    
-    outline: none;
-    text-decoration: none;
-    color: white;
-    padding:20px;  
-}
-
-.com{
-    font-family: 'Exo 2', sans-serif;
-    padding-left:40px;
-    color: whitesmoke;
-    font:25px bold; 
-}
-*/
 
 nav{
 	font-family: 'Exo 2', sans-serif;
@@ -213,15 +159,14 @@ form {
     padding-top: 40px;
     margin-bottom: 20px;
     overflow: hidden;
-    width: 70%
+    width: 70%;
 }
 
 .form-container {
     width: 1000px;
     display: flex;
     flex-wrap: nowrap;
-    margin-left: 20px
-/*	margin-left: */
+    margin-left: 20px;
 }
 
 .input_span {
@@ -230,7 +175,6 @@ form {
 	width: 260px;
     position: relative;
     margin-right: 260px;
-    /* overflow: hidden; */
 }
 
  label{
@@ -268,17 +212,45 @@ form {
 
 .move-right{
      animation: back 1s ease forwards;
-/*	transform: */
 }
 
 @keyframes back{
     0%{transform: translateX(-500px)}
     100%{transform: translateX(0px); opacity: 1;}
 }
-    
+
+.deet{
+    width: auto;
+    font-weight: bold;
+    box-shadow: 0px 4px 4px -3px gray;
+    padding:5px;
+    margin: auto;
+    font: 14px;
+    transform: scale(1);
+    transition: all 1s ease;
+    font-size: 13px
+}
+
+.loader {
+	border: 5px solid #f3f3f3;
+	border-radius: 50%;
+	border-top: 5px solid #3498db;
+	width: 20px;
+	height: 20px;
+	animation: spin 1s linear infinite;
+    position: absolute;
+    left:0;
+    right:0;
+    margin: auto;
+  
+
+  }
+  @keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+  }
     input:focus, input:valid {
         outline: none;
-/*        border-bottom: 2px solid blue;*/
     }
     
     input:focus + label, input:valid + label{
@@ -331,10 +303,20 @@ button {
     transition: all .5s ease;
 }
 
-.next:hover{
+.effect:hover{
     color: white;
      background: slateblue;
      cursor: pointer;
+ }
+
+ .effect {
+     color: slateblue;
+     background: white;
+ }
+
+ .uuu{
+     color: white;
+     background: white;
  }
  
  button:focus{
@@ -381,9 +363,16 @@ button {
     cursor: pointer;
 }
 
+.create > a{
+    text-decoration: none;
+    outline: none;
+    color: grey
+}
+
 .forget{
     margin-left: 20px;
     cursor: pointer;
+    color: gray
 }
 @keyframes drop{
     0%{transform: translateX(0px)}
@@ -466,7 +455,7 @@ button {
 }
 .no{
     color:red;
-    display: none
+    display: none;
 }
 .err{
     font-size:14px;
