@@ -82,7 +82,7 @@ class userController {
         return utilities.errorstatus(res, 400, 'Invalid User');
       }
       const {
-        id, firstname, lastname, phonenumber,
+        id, firstname, lastname, phonenumber, profilepic,
       } = user[0];
 
       return utilities.successStatus(res, 200, 'data', {
@@ -91,6 +91,7 @@ class userController {
         lastName: lastname,
         email,
         phoneNumber: phonenumber,
+        profilepic,
       });
     } catch (error) {
       return utilities.errorstatus(res, 500, 'SERVER ERROR');
