@@ -1,0 +1,589 @@
+openapi: 3.0.0
+
+info:
+  version: "1.0"
+  title: AutoMart
+  description: "Auto Mart is an online marketplace for automobiles of diverse makes, model or body type. With Auto Mart, users can sell their cars or buy from trusted dealerships or private sellers."
+
+servers:
+  - url: https://andela-automart-amos.herokuapp.com/api/v1
+  - url: http://localhost:3000/api/v1
+
+tags: 
+  - name : "Welcome"
+    description: "API for quick api welcome test"
+
+  - name : "Users"
+    description: "API for users in the app"
+
+  - name : "Cars"
+    description: "API for cars in the app"
+    
+  - name : "Orders"
+    description: "API for purchase orders in the app"
+
+  - name : "Flag"
+    description: "API flag car in the app"
+
+  - name : "Admin"
+    description: "API admin in the app"
+paths:
+  /:
+    get: 
+      tags: 
+        - Welcome
+      summary : Test get request
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responce"
+
+  /user:
+  /auth/signup:
+    post:
+      tags:
+        - Users
+      summary : Sign up a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                firstName: 
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                phoneNumber:
+                  type: number
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responce"
+
+  /auth/signin:
+    post:
+      tags:
+        - Users
+      summary : Sign's in an existing user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responce"
+          
+  /car:
+    post:
+      tags:
+        - Cars
+      summary : create a car sale ad
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                manufacturer:
+                  type: string
+                model:
+                  type: string
+                bodyType:
+                  type: string
+                state:
+                  type: string
+                price:
+                  type: number
+
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cars"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responce"
+          
+    get:
+      tags:
+        - Admin
+      summary : View all posted ads whether sold or available.
+      security:
+        - ApiKeyAuth: []
+
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cars"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responce"
+                
+  /order/{carId}:
+    post:
+      tags:
+        - Orders
+      summary : Create a purchase order.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: carId
+          in: path
+          required: true
+          description: Car identity
+          schema:
+            type : integer
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                priceOffered:
+                  type: number
+
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/orders"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responce"
+
+  /order/{orderId}/price:
+    patch:
+      tags:
+        - Orders
+      summary : Update the price of a purchase order. 
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          description: Order Identity
+          schema:
+            type : integer
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                newPriceOffered:
+                  type: number
+
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/orders"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responce"
+  
+
+                
+  /car/{carId}/status:
+    patch:
+      tags:
+        - Cars
+      summary : Mark a posted car Ad as sold.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: carId
+          in: path
+          required: true
+          description: car Identity
+          schema:
+            type : number
+
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cars"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responce"
+  
+  /car/{carId}/price:
+    patch:
+      tags:
+        - Cars
+      summary : Update the price of a car.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: carId
+          in: path
+          required: true
+          description: car Identity
+          schema:
+            type : number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                price:
+                  type: number
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cars"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responce"
+
+  /car/{carId}/:
+    get:
+      tags:
+        - Cars
+      summary : View a specific car.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: carId
+          in: path
+          required: true
+          description: car Identity
+          schema:
+            type : number
+            
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cars"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responce"
+                
+  /flag/{carId}:
+    post:
+      tags:
+        - Flag
+      summary : flag/report a posted AD as fraudulent.
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                reason:
+                  type: string
+                description:
+                  type: string
+      parameters:
+        - name: carId
+          in: path
+          required: true
+          description: Car Identity
+          schema:
+            type : number
+
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/flag"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responce"  
+
+  /car/{carId}:
+    delete:
+      tags:
+        - Admin
+      summary : Delete a specific car Ad.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: carId
+          in: path
+          required: true
+          description: Car Identity
+          schema:
+            type : integer
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/admin"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responce"
+                
+  /car?body_type:
+    get:
+      tags:
+        - Cars
+      summary : View all cars of a specific body type.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: body_type
+          in: query
+          required: true
+          description: Vehicle Body Type
+          schema:
+            type : string
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cars"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responce"  
+                
+  /car?status=available:
+    get:
+      tags:
+        - Cars
+      summary : View all unsold cars.
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cars"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responce"
+                
+  /car?status=available&min_price&max_price:
+    get:
+      tags:
+        - Cars
+      summary : View all unsold cars within a price range.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: min_price
+          in: query
+          required: true
+          description: Minimum Price
+          schema:
+            type : number
+        - name: max_price
+          in: query
+          required: true
+          description: Maximum Price
+          schema:
+            type : number
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cars"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responce"
+
+
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: authtoken
+      description: Requests should pass an authtoken header.
+
+
+  schemas:
+    cars:
+      type: object
+      properties:
+        email:
+          type: string
+        manufacturer:
+          type: string
+        model:
+          type: string
+        createdOn:
+          type: string
+        bodyType:
+          type: string
+        state:
+          type: string
+        status:
+          type: string
+        price:
+          type: number
+    
+    orders:
+      type: object
+      properties:
+        id:
+          type: integer
+        carId:
+          type: integer
+        buyer:
+          type: integer
+        createdOn:
+          type: string
+        status:
+          type: string
+        price:
+          type: integer
+        priceoffered:
+          type: integer
+          
+    flag:
+      type: object
+      properties:
+        id:
+          type: integer
+        carId:
+          type: integer
+        createdOn:
+          type: string
+        reason:
+          type: string
+        description:
+          type: string
+    
+    users:
+      type: object
+      properties: 
+        token: 
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string 
+        profilePic:
+           type: string
+  
+    responce:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+
+    admin:
+      type: object
+      properties:
+        status:
+          type: number
+        data:
+          type: string
