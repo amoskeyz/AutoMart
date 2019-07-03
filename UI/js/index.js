@@ -134,8 +134,8 @@ article.forEach((art) => {
 <p class="l ocation icon">Lagos</p>
 <p class="dialog_price">N600,000</p>
 <div class="dialog_button">
-<button class="dialog_signUp"><a class = "clicker" href="">Sign-Up</a></button>
-<button class="dialog_login"><a class="clicker" href="">Login</a></button>
+<button class="dialog_signUp"><a class = "clicker" href="index.html#signUp">Sign-Up</a></button>
+<button class="dialog_login"><a class="clicker" href="index.html#login">Login</a></button>
 </div>
 </div></div`;
   });
