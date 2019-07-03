@@ -3,7 +3,9 @@
 
 const { authtoken } = localStorage;
 
-const devURL = 'http://localhost:3000/api/v1/';
+
+// const devURL = 'http://localhost:3000/api/v1/';
+const devURL = 'https://andela-automart-amos.herokuapp.com/api/v1/';
 // const userURL = 'http://localhost:5001/api/v2/users/';
 
 const fetcher = async (url, method, body = undefined) => {
