@@ -1,17 +1,17 @@
 const orders = [
   {
-    buyerId: '1',
-    carId: '1',
+    buyer_id: '1',
+    car_id: '1',
     status: 'pending',
     price: '70000000',
-    priceOffered: '50000000',
+    price_offered: '50000000',
   },
   {
-    buyerId: '1',
-    carId: '1',
+    buyer_id: '1',
+    car_id: '1',
     status: 'approved',
     price: '70000000',
-    priceOffered: '50000000',
+    price_offered: '50000000',
   },
 ];
 

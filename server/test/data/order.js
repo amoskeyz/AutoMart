@@ -1,21 +1,24 @@
 const orders = [
   {
-    priceOffered: '50000000',
+    amount: '50000000',
+    car_id: '1',
   },
   {
-    priceOffered: 'sdksdls',
+    amount: 'sdksdls',
+    car_id: '1',
   },
   {
-    newPriceOffered: '30000000',
+    price: '30000000',
   },
   {
-    newPriceOffered: 'sdksdls',
+    price: 'sdksdls',
   },
   {
-    priceOffered: '-50000000',
+    amount: '-50000000',
+    car_id: '1',
   },
   {
-    newPriceOffered: '-345453545',
+    price: '-345453545',
   },
 ];
 

@@ -13,11 +13,11 @@ class validate {
 
   static validateSignup(req, res, next) {
     const {
-      firstName, lastName, email, password, phoneNumber,
+      first_name, last_name, email, password, address,
     } = req.body;
 
     const validateObject = {
-      firstName, lastName, email, password, phoneNumber,
+      first_name, last_name, email, password, address,
     };
 
     const error = util.validateJoi(validateObject, schema.signup);
@@ -25,10 +25,11 @@ class validate {
       return util.errorstatus(res, 400, error);
     }
 
-    req.body.firstName = firstName.trim();
-    req.body.lastName = lastName.trim();
+    req.body.first_name = first_name.trim();
+    req.body.last_name = last_name.trim();
     req.body.password = password.trim();
     req.body.email = email.toLowerCase().trim();
+    req.body.address = address.trim();
 
     return next();
   }
@@ -92,11 +93,11 @@ class validate {
   */
   static validateCar(req, res, next) {
     const {
-      manufacturer, model, bodyType, price, state,
+      manufacturer, model, body_type, price, state,
     } = req.body;
 
     const validateObject = {
-      manufacturer, model, bodyType, price, state,
+      manufacturer, model, body_type, price, state,
     };
 
     const error = util.validateJoi(validateObject, schema.car);
@@ -106,7 +107,7 @@ class validate {
 
     req.body.manufacturer = manufacturer.trim();
     req.body.model = model.trim();
-    req.body.bodyType = bodyType.trim();
+    req.body.body_type = body_type.trim();
     req.body.state = state.trim();
 
     if (Number(req.body.price) < 0) return util.errorstatus(res, 400, 'Price must Not be Negative');
@@ -123,8 +124,8 @@ class validate {
   */
 
   static validateOrder(req, res, next) {
-    const { priceOffered } = req.body;
-    const validateObject = { priceOffered };
+    const { amount, car_id } = req.body;
+    const validateObject = { amount, car_id };
 
     const error = util.validateJoi(validateObject, schema.order);
 
@@ -132,7 +133,7 @@ class validate {
       return util.errorstatus(res, 400, error);
     }
 
-    if (Number(req.body.priceOffered) < 0) return util.errorstatus(res, 400, 'Price must Not be Negative');
+    if (Number(req.body.amount) < 0) return util.errorstatus(res, 400, 'Amount Must Not be Negative');
     return next();
   }
 
@@ -146,8 +147,8 @@ class validate {
   */
 
   static validateUpdateOrder(req, res, next) {
-    const { newPriceOffered } = req.body;
-    const validateObject = { newPriceOffered };
+    const { price } = req.body;
+    const validateObject = { price };
 
     const error = util.validateJoi(validateObject, schema.updateOrder);
 
@@ -155,7 +156,7 @@ class validate {
       return util.errorstatus(res, 400, error);
     }
 
-    if (Number(req.body.newPriceOffered) < 0) return util.errorstatus(res, 400, 'Price must Not be Negative');
+    if (Number(req.body.price) < 0) return util.errorstatus(res, 400, 'Price must Not be Negative');
     return next();
   }
 
@@ -251,6 +252,12 @@ class validate {
       return util.errorstatus(res, 400, error);
     }
 
+    return next();
+  }
+
+  static validateImage(req, res, next) {
+    // console.log(req.files);
+    if (!req.files) return util.errorstatus(res, 404, 'NO IMAGE FOUND');
     return next();
   }
 }

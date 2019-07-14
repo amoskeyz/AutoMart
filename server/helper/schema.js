@@ -2,14 +2,14 @@ import Joi from 'joi';
 
 const schema = {
   signup: Joi.object().keys({
-    firstName: Joi.string().regex(/^[A-Za-z]{3,}$/).trim()
+    first_name: Joi.string().regex(/^[A-Za-z]{3,}$/).trim()
       .required(),
-    lastName: Joi.string().regex(/^[A-Za-z]{3,}$/).trim()
+    last_name: Joi.string().regex(/^[A-Za-z]{3,}$/).trim()
       .required(),
     email: Joi.string().email().required()
       .trim(),
     password: Joi.string().required().min(8),
-    phoneNumber: Joi.number().required(),
+    address: Joi.string().required(),
   }),
 
   signin: Joi.object().keys({
@@ -26,18 +26,19 @@ const schema = {
   car: Joi.object().keys({
     manufacturer: Joi.string().trim().required(),
     model: Joi.string().trim().required(),
-    bodyType: Joi.string().trim().required()
+    body_type: Joi.string().trim().required().valid('car', 'van', 'truck', 'trailer', 'bus', 'motorbike', 'jeep')
       .trim(),
     price: Joi.number().required(),
     state: Joi.string().trim().valid('new', 'used').required(),
   }),
 
   order: Joi.object().keys({
-    priceOffered: Joi.number().required(),
+    amount: Joi.number().required(),
+    car_id: Joi.number().required(),
   }),
 
   updateOrder: Joi.object().keys({
-    newPriceOffered: Joi.number().required(),
+    price: Joi.number().required(),
   }),
 
   updateCar: Joi.object().keys({

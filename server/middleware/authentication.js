@@ -8,7 +8,7 @@ dotenv.config();
 class authenticator {
   static async authenticateUser(req, res, next) {
     try {
-      const token = req.headers.authtoken;
+      const { token } = req.headers;
       if (!token) {
         return res.status(401).json({
           status: 'Error',
@@ -21,7 +21,7 @@ class authenticator {
       if (!isUser[0]) {
         return Utilities.errorstatus(res, 401, 'Unauthorise User, Please Sign Up');
       }
-      req.user = { id: isUser[0].id, email: isUser[0].email, isAdmin: isUser[0].isadmin };
+      req.user = { id: isUser[0].id, email: isUser[0].email, isAdmin: isUser[0].is_admin };
       return next();
     } catch (error) {
       return Utilities.errorstatus(res, 401, 'Unauthorization User');

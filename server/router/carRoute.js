@@ -10,6 +10,7 @@ carRouter.patch('/car/:carId/price', authenticator.authenticateUser, authenticat
 carRouter.get('/car/:carId/', authenticator.authenticateUser, authenticator.isUser, carController.specificCar);
 carRouter.get('/car', authenticator.authenticateUser, validator.validateGetCar, carController.car);
 carRouter.post('/flag/:carId', authenticator.authenticateUser, authenticator.isUser, validator.validateFlag, carController.flagCar);
+carRouter.patch('/cars/:car_id', authenticator.authenticateUser, authenticator.isUser, carController.updateCarImage);
 
 
 export default carRouter;
