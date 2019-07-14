@@ -16,52 +16,52 @@ function insertMultiple(table, array, returning = '') {
 
 const usersTable = `CREATE TABLE IF NOT EXISTS users(
   id serial PRIMARY KEY,
-  firstname text NOT NULL,
-  lastname text NOT NULL,
+  first_name text NOT NULL,
+  last_name text NOT NULL,
   email text NOT NULL,
   hashpassword text NOT NULL,
-  phonenumber text, 
-  isadmin boolean NOT NULL,
-  profilepic text DEFAULT 'http://res.cloudinary.com/demo/image/upload/v1340625837/4srvcynxrf5j87niqcx6w.jpg'
+  address text, 
+  is_admin boolean NOT NULL,
+  profile_pic text DEFAULT 'http://res.cloudinary.com/amoslv/image/upload/v1562438896/ytgtpwvbaw5ew8x8fwsb.png'
   );
 `;
 
 const carsTable = `CREATE TABLE IF NOT EXISTS cars(
   id serial PRIMARY KEY,
-  email text NOT NULL,
+  owner int NOT NULL,
   created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   manufacturer text NOT NULL,
   model text NOT NULL,
-  bodytype text NOT NULL,
+  body_type text NOT NULL,
   price text NOT NULL,
   state text NOT NULL, 
   status text NOT NULL,
-  carimage text DEFAULT 'http://res.cloudinary.com/demo/image/upload/v1340625837/4srvcynxrf5j87niqcx6w.jpg'
+  car_image text
   );
 `;
 
 const ordersTable = `CREATE TABLE IF NOT EXISTS orders(
   id serial PRIMARY KEY,
   created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  buyerid text NOT NULL,
-  carid text NOT NULL,
+  buyer_id text NOT NULL,
+  car_id text NOT NULL,
   status text NOT NULL,
   price text NOT NULL,
-  priceOffered text NOT NULL,
-  oldPriceOffered text,
-  newPriceOffered text 
+  price_offered text NOT NULL,
+  old_price_offered text,
+  new_price_offered text 
   );
 `;
 
 const flagsTable = `CREATE TABLE IF NOT EXISTS flags(
   id serial PRIMARY KEY,
   created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  carid text NOT NULL,
+  car_id text NOT NULL,
   reason text NOT NULL,
   description text NOT NULL
   );
 `;
-
+// DEFAULT 'http://res.cloudinary.com/amoslv/image/upload/v1562770121/p09iwdyzfz2u8b4mtf9d.jpg'
 
 async function create() {
   try {

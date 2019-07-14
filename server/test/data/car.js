@@ -2,14 +2,14 @@ const car = [
   {
     manufacturer: 'Toyota',
     model: 'Camry',
-    bodyType: 'car',
+    body_type: 'car',
     state: 'used',
     price: '70000000',
   },
   {
     manufacturer: 'Toyota',
     model: 'Camry',
-    bodyType: 'car',
+    body_type: 'car',
     state: 'jhjhkjhk',
     price: 'jbkhjkhj',
   },
@@ -22,7 +22,7 @@ const car = [
   {
     manufacturer: 'Toyota',
     model: 'Camry',
-    bodyType: 'car',
+    body_type: 'car',
     state: 'used',
     price: '-70000000',
   },

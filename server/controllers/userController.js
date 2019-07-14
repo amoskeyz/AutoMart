@@ -14,7 +14,7 @@ class userController {
   static async signupUser(req, res) {
     try {
       const {
-        firstName, lastName, email, password, phoneNumber,
+        first_name, last_name, email, password, address,
       } = req.body;
 
       const user = await dbMethods.readFromDb('users', '*', { email });
@@ -22,17 +22,17 @@ class userController {
       if (user[0]) {
         return utilities.errorstatus(res, 400, 'User Already Exist');
       }
-      const isAdmin = false;
+      const is_admin = false;
       const hashpassword = secure.passwordhash(password);
 
       const fetchedUser = await dbMethods.insertToDb('users', {
-        firstName, lastName, email, hashpassword, isAdmin, phoneNumber,
+        first_name, last_name, email, hashpassword, is_admin, address,
       }, 'RETURNING id');
 
       const { id } = fetchedUser;
 
       return utilities.successStatus(res, 201, 'data', {
-        token: token({ id: fetchedUser.id }), id, firstName, lastName, email, phoneNumber,
+        token: token({ id: fetchedUser.id }), id, first_name, last_name, email, address,
       });
     } catch (err) {
       return utilities.errorstatus(res, 500, 'SERVER ERROR');
@@ -53,16 +53,16 @@ class userController {
 
       if (passwordcheck) {
         const {
-          id, firstname, lastname, phonenumber,
+          id, first_name, last_name, address,
         } = user[0];
 
         return utilities.successStatus(res, 200, 'data', {
           token: token({ id }),
           id,
-          firstName: firstname,
-          lastName: lastname,
+          first_name,
+          last_name,
           email,
-          phoneNumber: phonenumber,
+          address,
         });
       }
 

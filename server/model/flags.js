@@ -1,6 +1,6 @@
 const flags = [
   {
-    carId: '1',
+    car_id: '1',
     reason: 'demand',
     description: 'Price too high',
   },

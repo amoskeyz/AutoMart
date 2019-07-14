@@ -1,16 +1,17 @@
 const user = [
   {
-    firstName: 'support',
-    lastName: 'automart',
+    first_name: 'support',
+    last_name: 'automart',
     email: 'support11@automart.com',
     password: 'automart',
-    phoneNumber: '09087897656',
+    address: '09087897656',
   },
   {
-    lastName: 'automart',
+    first_name: 'as',
+    last_name: 'automart',
     email: 'support@automart.com',
     password: 'automart',
-    phoneNumber: '09087897656',
+    address: '09087897656',
   },
   {
     email: 'support@automart.com',

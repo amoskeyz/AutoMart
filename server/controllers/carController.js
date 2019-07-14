@@ -6,16 +6,16 @@ import pool from '../db/config/config';
 class carController {
   static async postAds(req, res) {
     try {
-      const { email } = req.user;
+      const { id } = req.user;
 
       const {
-        manufacturer, model, bodyType, price, state,
+        manufacturer, model, body_type, price, state,
       } = req.body;
 
       const status = 'available';
 
       const carCreated = await dbMethods.insertToDb('cars', {
-        email, manufacturer, model, bodytype: bodyType, price, state, status,
+        owner: id, manufacturer, model, body_type, price, state, status,
       }, 'RETURNING *');
 
       return utilities.successStatus(res, 201, 'data', carCreated);
@@ -26,14 +26,14 @@ class carController {
 
   static async markSold(req, res) {
     try {
-      const { email } = req.user;
+      const { id } = req.user;
       const { carId } = req.params;
 
       const carCheck = await dbMethods.readFromDb('cars', '*', { id: Number(carId) });
 
       if (!carCheck[0]) return utilities.errorstatus(res, 400, 'Car Does Not Exist');
 
-      if (email === carCheck[0].email) {
+      if (id === carCheck[0].owner) {
         await dbMethods.updateDbRow('cars', { status: 'sold' }, { id: Number(carId) });
 
         const carDetails = await dbMethods.readFromDb('cars', '*', { id: Number(carId) });
@@ -47,7 +47,7 @@ class carController {
 
   static async updateCar(req, res) {
     try {
-      const { email } = req.user;
+      const { id } = req.user;
       const { carId } = req.params;
       const updatePrice = req.body.price;
 
@@ -55,7 +55,7 @@ class carController {
 
       if (!carCheck[0]) return utilities.errorstatus(res, 400, 'Car Does Not Exist');
 
-      if (email !== carCheck[0].email) return utilities.errorstatus(res, 400, 'You Are not allowed to perform this action');
+      if (id !== carCheck[0].owner) return utilities.errorstatus(res, 400, 'You Are not allowed to perform this action');
 
       if (carCheck[0].status !== 'sold') {
         await dbMethods.updateDbRow('cars', { price: updatePrice }, { id: Number(carId) });
@@ -113,7 +113,7 @@ class carController {
       }
 
       if (bodyType) {
-        const carType = await dbMethods.readFromDb('cars', '*', { bodytype: bodyType.toLowerCase() });
+        const carType = await dbMethods.readFromDb('cars', '*', { body_type: bodyType.toLowerCase() });
 
         if (!carType[0]) return utilities.errorstatus(res, 404, 'No Car With This Body Type Found');
         return utilities.successStatus(res, 200, 'data', carType);
@@ -129,9 +129,16 @@ class carController {
 
     if (!car[0]) return utilities.errorstatus(res, 404, 'Car Not Found');
 
-    const flagObj = await dbMethods.insertToDb('flags', { carId, reason, description }, 'RETURNING *');
+    const flagObj = await dbMethods.insertToDb('flags', { car_id: carId, reason, description }, 'RETURNING *');
 
     return utilities.successStatus(res, 201, 'data', flagObj);
+  }
+
+  static async updateCarImage(req, res) {
+    const { car_image } = req.body;
+    const { car_id } = req.params;
+    await dbMethods.updateDbRow('cars', { car_image }, { id: Number(car_id) });
+    return utilities.successStatus(res, 200, 'data', 'Updated Successfully');
   }
 }
 
