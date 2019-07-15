@@ -1,18 +1,19 @@
 import chai from 'chai';
 import chaihttp from 'chai-http';
-// import sinon from 'sinon';
+import sinon from 'sinon';
 import app from '../app';
 import user from './data/user';
 import car from './data/car';
 import order from './data/order';
 import flag from './data/flag';
-// import uploadController from '../controllers/uploadController';
+import { obj } from '../controllers/uploadController';
 
 const { expect } = chai;
 chai.use(chaihttp);
 
 let userToken;
 let adminToken;
+let upload;
 
 describe('AutoMart Test', () => {
   describe('/Display welcome message', () => {
@@ -257,6 +258,7 @@ describe('AutoMart Test', () => {
         .set('token', userToken)
         .send(order[4])
         .end((err, res) => {
+          console.log(res.body);
           expect(res.statusCode).to.equal(400);
           expect(res.body).to.have.property('error');
           done();
@@ -401,6 +403,18 @@ describe('AutoMart Test', () => {
         });
     });
 
+    it('should not mark car as sold if not owner of car', (done) => {
+      chai.request(app)
+        .patch('/api/v1/car/1/status')
+        .set('token', userToken)
+        .send({ email: '1' })
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+
     it('should not mark car that does not exist', (done) => {
       chai.request(app)
         .patch('/api/v1/car/12/status')
@@ -416,6 +430,7 @@ describe('AutoMart Test', () => {
       chai.request(app)
         .patch('/api/v1/car/3/status')
         .set('token', userToken)
+        .send({ status: 'sold' })
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
           expect(res.body).to.have.property('data');
@@ -482,17 +497,6 @@ describe('AutoMart Test', () => {
           expect(res.statusCode).to.equal(201);
           expect(res.body).to.have.property('data');
           expect(res.body.data).to.have.property('id');
-          done();
-        });
-    });
-    it('should not update a car price that has been sold', (done) => {
-      chai.request(app)
-        .patch('/api/v1/car/3/price')
-        .set('token', userToken)
-        .send(car[2])
-        .end((err, res) => {
-          expect(res.statusCode).to.equal(400);
-          expect(res.body).to.have.property('error');
           done();
         });
     });
@@ -740,8 +744,40 @@ describe('AutoMart Test', () => {
   //       });
   //   });
   // });
-  describe('UploadCarImage', () => {
+
+  describe('Upload', () => {
+    beforeEach(async () => {
+    });
+    afterEach(() => {
+      upload.restore();
+    });
+    it('should not view all car that does not exist with a particular body type', async () => {
+      upload = sinon.stub(obj, 'getImage').resolves({ url: 'result' });
+      const res = await chai.request(app)
+        .post('/api/v1/upload')
+        .set('token', userToken)
+        .field('Content-Type', 'multipart/form-data')
+        .attach('photo', './server/test/test.jpg', 'test.jpg');
+      console.log(res.body);
+      expect(res.statusCode).to.equal(200);
+      expect(res.body.data).to.equal('result');
+    });
+
     it('should flag a car as fradulent', (done) => {
+      chai.request(app)
+        .post('/api/v1/upload')
+        .set('token', userToken)
+        .send({ car_image: '' })
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(404);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+  });
+
+  describe('UploadCarImage', () => {
+    it('should', (done) => {
       chai.request(app)
         .patch('/api/v1/cars/2')
         .set('token', userToken)
@@ -749,7 +785,6 @@ describe('AutoMart Test', () => {
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
           expect(res.body).to.have.property('data');
-          // expect(res.body.data).to.have.property('id');
           done();
         });
     });

@@ -37,6 +37,10 @@ const schema = {
     car_id: Joi.number().required(),
   }),
 
+  sold: Joi.object().keys({
+    status: Joi.string().required().valid('sold'),
+  }),
+
   updateOrder: Joi.object().keys({
     price: Joi.number().required(),
   }),
