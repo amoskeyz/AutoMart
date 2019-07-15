@@ -61,7 +61,7 @@ class carController {
 
       const carDetails = await dbMethods.readFromDb('cars', '*', { id: Number(carId) });
 
-      return utilities.successStatus(res, 200, 'data', carDetails);
+      return utilities.successStatus(res, 200, 'data', carDetails[0]);
     } catch (error) {
       return utilities.errorstatus(res, 500, 'SERVER ERROR');
     }
