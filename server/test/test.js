@@ -258,7 +258,6 @@ describe('AutoMart Test', () => {
         .set('token', userToken)
         .send(order[4])
         .end((err, res) => {
-          console.log(res.body);
           expect(res.statusCode).to.equal(400);
           expect(res.body).to.have.property('error');
           done();
@@ -717,34 +716,6 @@ describe('AutoMart Test', () => {
     });
   });
 
-  // describe('Upload', () => {
-  //   let upload;
-  //   beforeEach(() => {
-  //     upload = sinon.stub(uploadController, 'upload').returns(() => {});
-  //     // upload.yields('result');
-  //   });
-  //   afterEach(() => {
-  //     upload.restore();
-  //   });
-  //   it('should not view all car that does not exist with a particular body type', (done) => {
-  //     upload.yields('result');
-  //     console.log(upload);
-  //     // uploadImage.yields("link to image");
-  //     chai.request(app)
-  //     // uploadImage.yields('link to image');
-  //       .post('/api/v1/upload')
-  //       .set('token', userToken)
-  //       .field('Content-Type', 'multipart/form-data')
-  //       .attach('photo', './server/test/test.jpg', 'test.jpg')
-  //       .end((err, res) => {
-  //         console.log(res.body);
-  //         // expect(res.statusCode).to.equal(200);
-  //         expect(res.body).to.equal('result');
-  //         done();
-  //       });
-  //   });
-  // });
-
   describe('Upload', () => {
     beforeEach(async () => {
     });
@@ -758,7 +729,6 @@ describe('AutoMart Test', () => {
         .set('token', userToken)
         .field('Content-Type', 'multipart/form-data')
         .attach('photo', './server/test/test.jpg', 'test.jpg');
-      console.log(res.body);
       expect(res.statusCode).to.equal(200);
       expect(res.body.data).to.equal('result');
     });

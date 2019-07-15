@@ -16,14 +16,16 @@ class authenticator {
         });
       }
       const verify = jwt.verify(token, process.env.secretKey, (err, decoded) => decoded);
+
       req.decoder = verify.id;
+
       const isUser = await dbMethods.readFromDb('users', '*', { id: verify.id });
       if (!isUser[0]) {
         return Utilities.errorstatus(res, 401, 'Unauthorise User, Please Sign Up');
       }
+
       req.user = { id: isUser[0].id, email: isUser[0].email, isAdmin: isUser[0].is_admin };
-      console.log(req.body, '=====> body');
-      console.log(req.params, '====> params');
+
       return next();
     } catch (error) {
       return Utilities.errorstatus(res, 401, 'Unauthorization User');
