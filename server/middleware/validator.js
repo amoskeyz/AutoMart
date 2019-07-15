@@ -169,6 +169,18 @@ class validate {
   * @memberof Controllers
   */
 
+  static validateSold(req, res, next) {
+    const { status } = req.body;
+    const validateObject = { status };
+
+    const error = util.validateJoi(validateObject, schema.sold);
+
+    if (error) {
+      return util.errorstatus(res, 400, error);
+    }
+    return next();
+  }
+
   static validateUpdateCar(req, res, next) {
     const { price } = req.body;
     const validateObject = { price };

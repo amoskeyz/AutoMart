@@ -5,7 +5,7 @@ import authenticator from '../middleware/authentication';
 
 const carRouter = express();
 carRouter.post('/car/', authenticator.authenticateUser, authenticator.isUser, validator.validateCar, carController.postAds);
-carRouter.patch('/car/:carId/status', authenticator.authenticateUser, authenticator.isUser, carController.markSold);
+carRouter.patch('/car/:carId/status', authenticator.authenticateUser, authenticator.isUser, validator.validateSold, carController.markSold);
 carRouter.patch('/car/:carId/price', authenticator.authenticateUser, authenticator.isUser, validator.validateUpdateCar, carController.updateCar);
 carRouter.get('/car/:carId/', authenticator.authenticateUser, authenticator.isUser, carController.specificCar);
 carRouter.get('/car', authenticator.authenticateUser, validator.validateGetCar, carController.car);

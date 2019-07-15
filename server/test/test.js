@@ -403,6 +403,18 @@ describe('AutoMart Test', () => {
         });
     });
 
+    it('should not mark car as sold if not owner of car', (done) => {
+      chai.request(app)
+        .patch('/api/v1/car/1/status')
+        .set('token', userToken)
+        .send({ email: '1' })
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(400);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+
     it('should not mark car that does not exist', (done) => {
       chai.request(app)
         .patch('/api/v1/car/12/status')
@@ -418,6 +430,7 @@ describe('AutoMart Test', () => {
       chai.request(app)
         .patch('/api/v1/car/3/status')
         .set('token', userToken)
+        .send({ status: 'sold' })
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
           expect(res.body).to.have.property('data');
