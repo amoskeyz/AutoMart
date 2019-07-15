@@ -487,17 +487,6 @@ describe('AutoMart Test', () => {
           done();
         });
     });
-    it('should not update a car price that has been sold', (done) => {
-      chai.request(app)
-        .patch('/api/v1/car/3/price')
-        .set('token', userToken)
-        .send(car[2])
-        .end((err, res) => {
-          expect(res.statusCode).to.equal(400);
-          expect(res.body).to.have.property('error');
-          done();
-        });
-    });
     it('should update a car price', (done) => {
       chai.request(app)
         .patch('/api/v1/car/4/price')
