@@ -22,6 +22,8 @@ class authenticator {
         return Utilities.errorstatus(res, 401, 'Unauthorise User, Please Sign Up');
       }
       req.user = { id: isUser[0].id, email: isUser[0].email, isAdmin: isUser[0].is_admin };
+      console.log(req.body, '=====> body');
+      console.log(req.params, '====> params');
       return next();
     } catch (error) {
       return Utilities.errorstatus(res, 401, 'Unauthorization User');

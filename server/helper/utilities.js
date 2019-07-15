@@ -37,6 +37,7 @@ class Utilities {
   */
 
   static errorstatus(res, statusCode, errorMessage) {
+    console.log(errorMessage);
     return res.status(statusCode).json({
       status: statusCode,
       error: errorMessage,
@@ -55,6 +56,7 @@ class Utilities {
   static successStatus(res, status, key, object) {
     const response = { status };
     response[key] = object;
+    console.log(response);
     return res.status(status).json(response);
   }
 
