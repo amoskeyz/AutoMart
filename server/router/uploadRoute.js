@@ -1,5 +1,5 @@
 import express from 'express';
-import uploadController from '../controllers/uploadController';
+import { uploadController } from '../controllers/uploadController';
 import validator from '../middleware/validator';
 import authenticator from '../middleware/authentication';
 
