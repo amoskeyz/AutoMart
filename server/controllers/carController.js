@@ -90,7 +90,7 @@ class carController {
 
     const cars = await pool.query('select * from cars');
 
-    if (isAdmin && !status && !bodyType) {
+    if (!status && !bodyType) {
       return utilities.successStatus(res, 200, 'data', cars.rows);
     }
 
