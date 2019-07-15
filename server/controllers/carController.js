@@ -28,7 +28,10 @@ class carController {
     try {
       const { id } = req.user;
       const { carId } = req.params;
-      console.log(req.body === {}, req.body === null, req.body === undefined);
+      console.log(req.body, '=====> body');
+      console.log(req.params, '====> params');
+      // console.log(req.body === {}, req.body === null, req.body === undefined);
+      console.log(JSON.stringify(req.body) === '{}')
       if (JSON.stringify(req.body) === '{}') {
         const carCheck = await dbMethods.readFromDb('cars', '*', { id: Number(carId) });
 
@@ -41,7 +44,7 @@ class carController {
 
           return utilities.successStatus(res, 200, 'data', carDetails[0]);
         } return utilities.errorstatus(res, 400, 'User Can Not Mark This Car As Sold');
-      } return utilities.errorstatus(res, 400, 'Request Body Should Not Have A Value');
+      } return utilities.errorstatus(res, 500, 'Request Body Should Not Have A Value');
     } catch (error) {
       return utilities.errorstatus(res, 500, 'SERVER ERROR');
     }
