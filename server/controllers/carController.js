@@ -28,23 +28,18 @@ class carController {
     try {
       const { id } = req.user;
       const { carId } = req.params;
-      console.log(req.body, '=====> body');
-      console.log(req.params, '====> params');
-      // console.log(req.body === {}, req.body === null, req.body === undefined);
-      console.log(JSON.stringify(req.body) === '{}')
-      if (JSON.stringify(req.body) === '{}') {
-        const carCheck = await dbMethods.readFromDb('cars', '*', { id: Number(carId) });
 
-        if (!carCheck[0]) return utilities.errorstatus(res, 400, 'Car Does Not Exist');
+      const carCheck = await dbMethods.readFromDb('cars', '*', { id: Number(carId) });
 
-        if (id === carCheck[0].owner) {
-          await dbMethods.updateDbRow('cars', { status: 'sold' }, { id: Number(carId) });
+      if (!carCheck[0]) return utilities.errorstatus(res, 400, 'Car Does Not Exist');
 
-          const carDetails = await dbMethods.readFromDb('cars', '*', { id: Number(carId) });
+      if (id === carCheck[0].owner) {
+        await dbMethods.updateDbRow('cars', { status: 'sold' }, { id: Number(carId) });
 
-          return utilities.successStatus(res, 200, 'data', carDetails[0]);
-        } return utilities.errorstatus(res, 400, 'User Can Not Mark This Car As Sold');
-      } return utilities.errorstatus(res, 500, 'Request Body Should Not Have A Value');
+        const carDetails = await dbMethods.readFromDb('cars', '*', { id: Number(carId) });
+
+        return utilities.successStatus(res, 200, 'data', carDetails[0]);
+      } return utilities.errorstatus(res, 400, 'User Can Not Mark This Car As Sold');
     } catch (error) {
       return utilities.errorstatus(res, 500, 'SERVER ERROR');
     }
