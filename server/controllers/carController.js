@@ -57,13 +57,11 @@ class carController {
 
       if (id !== carCheck[0].owner) return utilities.errorstatus(res, 400, 'You Are not allowed to perform this action');
 
-      if (carCheck[0].status !== 'sold') {
-        await dbMethods.updateDbRow('cars', { price: updatePrice }, { id: Number(carId) });
+      await dbMethods.updateDbRow('cars', { price: updatePrice }, { id: Number(carId) });
 
-        const carDetails = await dbMethods.readFromDb('cars', '*', { id: Number(carId) });
+      const carDetails = await dbMethods.readFromDb('cars', '*', { id: Number(carId) });
 
-        return utilities.successStatus(res, 200, 'data', carDetails);
-      } return utilities.errorstatus(res, 400, 'Car Already Sold');
+      return utilities.successStatus(res, 200, 'data', carDetails);
     } catch (error) {
       return utilities.errorstatus(res, 500, 'SERVER ERROR');
     }
@@ -90,7 +88,7 @@ class carController {
 
     const cars = await pool.query('select * from cars');
 
-    if (isAdmin && !status && !bodyType) {
+    if (!status && !bodyType) {
       return utilities.successStatus(res, 200, 'data', cars.rows);
     }
 
