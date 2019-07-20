@@ -22,7 +22,7 @@ export class uploadController {
     const file = req.files.photo;
     try {
       const result = await obj.getImage(file);
-      return utilities.successStatus(res, 200, 'data', result.url);
+      return utilities.successStatus(res, 200, 'data', result);
     } catch (error) {
       return utilities.errorstatus(res, 400, 'Network Error, Could not Upload Image');
     }

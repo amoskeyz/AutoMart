@@ -20,7 +20,7 @@ class userController {
       const user = await dbMethods.readFromDb('users', '*', { email });
 
       if (user[0]) {
-        return utilities.errorstatus(res, 400, 'User Already Exist');
+        return utilities.errorstatus(res, 409, 'User Already Exist');
       }
       const is_admin = false;
       const hashpassword = secure.passwordhash(password);
@@ -82,16 +82,16 @@ class userController {
         return utilities.errorstatus(res, 400, 'Invalid User');
       }
       const {
-        id, firstname, lastname, phonenumber, profilepic,
+        id, first_name, last_name, address, profile_pic,
       } = user[0];
 
       return utilities.successStatus(res, 200, 'data', {
         id,
-        firstName: firstname,
-        lastName: lastname,
+        first_name,
+        last_name,
         email,
-        phoneNumber: phonenumber,
-        profilepic,
+        address,
+        profile_pic,
       });
     } catch (error) {
       return utilities.errorstatus(res, 500, 'SERVER ERROR');
