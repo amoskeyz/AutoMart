@@ -56,7 +56,7 @@ describe('AutoMart Test', () => {
         .post('/api/v1/auth/signup')
         .send(user[0])
         .end((err, res) => {
-          expect(res.statusCode).to.equal(400);
+          expect(res.statusCode).to.equal(409);
           expect(res.body).to.have.property('error');
           expect(res.body.error).to.equal('User Already Exist');
           done();
@@ -722,7 +722,7 @@ describe('AutoMart Test', () => {
     afterEach(() => {
       upload.restore();
     });
-    it('should not view all car that does not exist with a particular body type', async () => {
+    it('should upload an image ', async () => {
       upload = sinon.stub(obj, 'getImage').resolves({ url: 'result' });
       const res = await chai.request(app)
         .post('/api/v1/upload')
@@ -730,10 +730,10 @@ describe('AutoMart Test', () => {
         .field('Content-Type', 'multipart/form-data')
         .attach('photo', './server/test/test.jpg', 'test.jpg');
       expect(res.statusCode).to.equal(200);
-      expect(res.body.data).to.equal('result');
+      expect(res.body.data.url).to.equal('result');
     });
 
-    it('should flag a car as fradulent', (done) => {
+    it('should not upload with an image file', (done) => {
       chai.request(app)
         .post('/api/v1/upload')
         .set('token', userToken)
@@ -747,7 +747,7 @@ describe('AutoMart Test', () => {
   });
 
   describe('UploadCarImage', () => {
-    it('should', (done) => {
+    it('should update car image url', (done) => {
       chai.request(app)
         .patch('/api/v1/cars/2')
         .set('token', userToken)

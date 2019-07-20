@@ -34,8 +34,8 @@ paths:
         - Welcome
       summary : Test get request
       responses:
-        '201':
-          description: Created
+        '200':
+          description: Ok
           content:
             application/json:
               schema:
@@ -54,16 +54,16 @@ paths:
             schema:
               type: object
               properties: 
-                firstName: 
+                first_name: 
                   type: string
-                lastName:
+                last_name:
                   type: string
                 email:
                   type: string
                 password:
                   type: string
-                phoneNumber:
-                  type: number
+                address:
+                  type: string
       responses:
         201:
           description: Created
@@ -126,7 +126,7 @@ paths:
                   type: string
                 model:
                   type: string
-                bodyType:
+                body_type:
                   type: string
                 state:
                   type: string
@@ -149,7 +149,7 @@ paths:
           
     get:
       tags:
-        - Admin
+        - Cars
       summary : View all posted ads whether sold or available.
       security:
         - ApiKeyAuth: []
@@ -168,20 +168,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/responce"
                 
-  /order/{carId}:
+  /order/:
     post:
       tags:
         - Orders
       summary : Create a purchase order.
       security:
         - ApiKeyAuth: []
-      parameters:
-        - name: carId
-          in: path
-          required: true
-          description: Car identity
-          schema:
-            type : integer
 
       requestBody:
         required: true
@@ -190,7 +183,9 @@ paths:
             schema:
               type: object
               properties: 
-                priceOffered:
+                amount:
+                  type: number
+                car_id:
                   type: number
 
       responses:
@@ -229,7 +224,7 @@ paths:
             schema:
               type: object
               properties: 
-                newPriceOffered:
+                price:
                   type: number
 
       responses:
@@ -262,6 +257,15 @@ paths:
           description: car Identity
           schema:
             type : number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                status:
+                  type: string
 
       responses:
         200:
@@ -501,7 +505,7 @@ components:
     ApiKeyAuth:
       type: apiKey
       in: header
-      name: authtoken
+      name: token
       description: Requests should pass an authtoken header.
 
 
@@ -517,7 +521,7 @@ components:
           type: string
         createdOn:
           type: string
-        bodyType:
+        body_type:
           type: string
         state:
           type: string
@@ -563,13 +567,13 @@ components:
       properties: 
         token: 
           type: string
-        firstName:
+        first_name:
           type: string
-        lastName:
+        last_name:
           type: string
         email:
           type: string 
-        profilePic:
+        profile_pic:
            type: string
   
     responce:
