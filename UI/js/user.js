@@ -12,9 +12,9 @@ const getSignUpDetails = () => {
   const lastName = document.querySelectorAll('.userName')[1].value;
   const email = document.querySelectorAll('.userName')[2].value;
   const password = document.querySelector('#password').value;
-  const phoneNumber = document.querySelector('#number').value;
+  const address = document.querySelector('#address').value;
   const obj = {
-    firstName, lastName, email, password, phoneNumber,
+    first_name: firstName, last_name: lastName, email, password, address,
   };
   return obj;
 };
@@ -29,14 +29,20 @@ form.addEventListener('submit', async (event) => {
     spinner.style.display = 'initial';
     const url = `${devURL}auth/signup`;
     deet.style.transform = 'scale(0)';
+
     const { responseObj, statusCode } = await fetcher(url, 'POST', details);
+
     if (statusCode === 201) {
       deh.style.color = 'green';
       deh.textContent = 'Registered Successful';
       de.textContent = 'Welcome';
       deet.style.transform = 'scale(1)';
+
       const { token } = responseObj.data;
-      localStorage.setItem('authtoken', token);
+      localStorage = '';
+      localStorage.setItem('token', token);
+      localStorage.setItem('userDet', document.querySelectorAll('.userName')[2].value);
+      
       setTimeout(() => { window.location = 'main.html'; }, 3000);
     } else {
       deh.textContent = 'Error';
