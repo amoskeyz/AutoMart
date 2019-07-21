@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 
-const { authtoken } = localStorage;
+const { token } = localStorage;
 
 
 // const devURL = 'http://localhost:3000/api/v1/';
@@ -13,13 +13,15 @@ const fetcher = async (url, method, body = undefined) => {
     method,
     headers: new Headers({
       'Content-Type': 'application/json',
-      authtoken,
+      token,
     }),
     body: JSON.stringify(body),
   };
+  // console.log(object);
   const response = await fetch(url, object);
+  // console.log(response);
   const statusCode = response.status;
   const responseObj = await response.json();
-  console.log(responseObj);
+  // console.log(responseObj);
   return { responseObj, statusCode };
 };
