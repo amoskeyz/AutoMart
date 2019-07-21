@@ -156,7 +156,8 @@ nav{
 }
 .profile_img{
 	padding-top: 10px;
-	background: white;
+    background: white;
+    height: 210px;
 }
 
 .profile_img > img{
@@ -323,6 +324,38 @@ article{
 	font-size: 20px;
 }
 
+.home::before{
+    position: absolute;
+    content: '\f015';
+    font-weight: 900;
+    font-size: 25px;
+    top:-5px;
+    right:200px;
+}
+
+.pos::before{
+    position: absolute;
+    content: '\f067';
+    font-weight: 900;
+    left:70px;
+    font-size:20px
+}
+
+.ord::before{
+    position: absolute;
+    content: '\f218';
+    font-weight: 900;
+    font-size: 20px;
+    left: 70px
+}
+.mads::before{
+    position: absolute;
+    content: '\f02c';
+    font-weight: 900;
+    left:70px;
+    font-size:20px
+}
+
 .grow {
 	transform: scale(1);
 }
@@ -339,7 +372,7 @@ article{
     justify-content: center
 }
 
-.tag-button > button{
+.tag-button > button, .postAds{
     margin: 60px 10px 10px 10px;
     padding:20px;
     font-size: 16px;
@@ -348,6 +381,11 @@ article{
     color: white;
     border:none;
     transition: all 0.25s linear;
+}
+
+.postAds{
+    margin:0;
+    margin-right:120px;
 }
 
 .tag-button > button:nth-child(1){
@@ -429,6 +467,53 @@ article > p{
     margin: 7px
 }
 
+.loader {
+	border: 5px solid #f3f3f3;
+	border-radius: 50%;
+	border-top: 5px solid #3498db;
+	width: 20px;
+	height: 20px;
+	animation: spin 1s linear infinite;
+    position: absolute;
+    /* top: auto; */
+    /* bottom: auto; */
+    left: 0;
+    right:0;
+    margin: auto;
+	/* margin-top: -5px; */
+	/* padding:  */
+
+  }
+
+  @keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+  }
+
+
+  .connn{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    /* position: relative; */
+  }
+  .loaderw {
+	border: 5px solid #f3f3f3;
+	border-radius: 50%;
+	border-top: 5px solid #3498db;
+	width: 40px;
+	height: 40px;
+	animation: spin 1s linear infinite;
+    position: absolute;
+    top: 250px;
+    /* bottom: 0; */
+    left: 0;
+    right:0;
+    margin: auto;
+	/* margin-top: -5px; */
+	/* padding:  */
+
+  }
 
 #main_bar{
     height: 91vh;
@@ -636,14 +721,15 @@ h3{
     width:400px;
     height:300px;
     border:2px solid grey;
-    padding: 3px
+    padding: 3px;
+    margin-right: 150px;
 }
 .car-model > label{
     display: flex;
-    margin: auto;
+    margin-left: 100px;
     margin-top: 20px;
     padding:10px;
-    width:25%;
+    width:20%;
     border: 2px solid slateblue;
     background: white;
     transition: all 0.25 linear ease;
