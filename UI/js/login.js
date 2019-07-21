@@ -75,7 +75,7 @@ display.addEventListener('click', async (event) => {
       display.classList.add('effect');
       display.classList.remove('uuu');
     }
-    
+
     if (checker && !submitFlag) {
       const url = `${devURL}user`;
       const { responseObj, statusCode } = await fetcher(url, 'POST', details);
@@ -83,9 +83,10 @@ display.addEventListener('click', async (event) => {
       if (statusCode === 200) {
         add.classList.add('move-left');
         add.classList.remove('move-right');
-        userName.textContent = `${responseObj.data.firstName} ${responseObj.data.lastName}`;
+        console.log(responseObj);
+        userName.textContent = `${responseObj.data.first_name} ${responseObj.data.last_name}`;
         userEmail.textContent = `${responseObj.data.email}`;
-        image.attributes.src.value = 'img/avatar.png';
+        image.attributes.src.value = `${responseObj.data.profile_pic}`;
         detailss.style.opacity = '1';
         goBack.style.display = 'initial';
         spinner.style.display = 'none';
@@ -127,7 +128,9 @@ display.addEventListener('click', async (event) => {
       no.style.display = 'block';
       no.style.color = 'rgb(23, 148, 23)';
       const { token } = responseObj.data;
-      localStorage.setItem('authtoken', token);
+      localStorage = '';
+      localStorage.setItem('token', token);
+      localStorage.setItem('userDet', input[1].value);
 
       if (responseObj.data.email === 'admin@automart.com') {
         setTimeout(() => { window.location = 'admin.html'; }, 3000);
@@ -146,7 +149,6 @@ display.addEventListener('click', async (event) => {
     }
 
     if (!checker) {
-      console.log('im here');
       spinner.style.display = 'none';
       display.classList.add('effect');
       display.classList.remove('uuu');
