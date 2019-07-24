@@ -32,7 +32,7 @@ class authenticator {
     }
   }
 
-  static isUser(req, res, next) {
+  static isRegularUser(req, res, next) {
     const { isAdmin } = req.user;
     if (isAdmin) {
       return Utilities.errorstatus(res, 403, 'Forbidden, You Are not allowed to perform this action');
