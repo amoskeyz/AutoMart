@@ -82,7 +82,7 @@ class carController {
   }
 
   static async car(req, res) {
-    const { isAdmin } = req.user;
+//     const { isAdmin } = req.user;
     const { status } = req.query;
     const bodyType = req.query.body_type;
 
@@ -92,7 +92,7 @@ class carController {
       return utilities.successStatus(res, 200, 'data', cars.rows);
     }
 
-    if (!isAdmin) {
+//     if (!isAdmin) {
       if (status) {
         if (req.query.min_price && req.query.max_price) {
           const unsoldCars = await dbMethods.readFromDb('cars', '*', { status: status.toLowerCase() });
@@ -116,7 +116,7 @@ class carController {
         if (!carType[0]) return utilities.errorstatus(res, 404, 'No Car With This Body Type Found');
         return utilities.successStatus(res, 200, 'data', carType);
       }
-    } return utilities.errorstatus(res, 403, 'Forbidden, You Are not allowed to perform this action');
+//     } return utilities.errorstatus(res, 403, 'Forbidden, You Are not allowed to perform this action');
   }
 
   static async flagCar(req, res) {
